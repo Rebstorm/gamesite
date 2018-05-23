@@ -1,0 +1,31 @@
+/* Fragment rulez */
+
+div.fragment {
+    position: absolute;
+    top: 3em;
+    left: 12.5%;
+    width: 75%;
+    background: rgb(255, 251, 251);
+    border-radius: 2em;
+    z-index: 101;
+    transition: cubic-bezier(0.895, 0.03, 0.685, 0.22) 500ms;
+    animation: fadein 500ms;
+    box-shadow: 10px 10px 5px 0px rgba(0,0,0,0.75);
+}
+
+div#text-box-paul{
+    position: relative;
+    float: right;
+    padding: 2em;
+}
+
+div.close-box{
+    position: relative;
+    float:right;
+    padding: 2em;
+    right: 0;
+}
+
+div.close-box:hover{
+    cursor: pointer;
+}

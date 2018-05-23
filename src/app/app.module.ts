@@ -10,8 +10,10 @@ import { NotfoundComponent } from './notfound/notfound.component';
 import { ProfileComponent } from './mainmenu/profile/profile.component';
 
 
+
 const routes: Routes = [
   { path: '', component: MainmenuComponent },
+  { path: 'profile', component: ProfileComponent},
   { path: '**', component: NotfoundComponent }
 ]
 

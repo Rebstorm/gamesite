@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-mainmenu',
@@ -7,10 +8,10 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 })
 export class MainmenuComponent implements AfterViewInit {
   
+  router:Router;
 
-
-  constructor() { 
-
+  constructor(router:Router) { 
+    this.router = router;
   }
 
   
@@ -43,7 +44,6 @@ export class MainmenuComponent implements AfterViewInit {
     document.getElementById("menu-extender").classList.remove("hide");
 
   }
-
 
   addClass(c:string, id:string) {
     var element, name, arr;

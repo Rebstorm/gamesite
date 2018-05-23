@@ -3,10 +3,8 @@
 /* Moving Clouds */
 div#clouds{
     position: absolute;
-	padding: 100px 0;
-    background: -linear-gradient(top, #c9dbe9 0%, #fff 100%);
     width: 100%;
-    z-index: 1;
+	z-index: 1;
 }
 
 /*Time to finalise the cloud shape*/
@@ -16,18 +14,15 @@ div.cloud {
     position: relative; 
 }
 
-.cloud:before, .cloud:after {
-	position: absolute; top: -15px; left: 10px;
-		
-}
-
 /*Time to animate*/
 div.c1 {
     z-index: 1;
 	-webkit-animation: moveclouds 15s linear infinite;
 	-moz-animation: moveclouds 15s linear infinite;
     -o-animation: moveclouds 15s linear infinite;
-    animation:  moveclouds 15s linear infinite;
+	animation:  moveclouds 15s linear infinite;
+	
+	will-change: scroll-position;
 }
 
 /*variable speed, opacity, and position of clouds for realistic effect*/
@@ -44,7 +39,8 @@ div.c2 {
 	-webkit-animation: moveclouds 25s linear infinite;
 	-moz-animation: moveclouds 25s linear infinite;
     -o-animation: moveclouds 25s linear infinite;
-    animation:  moveclouds 25s linear infinite;
+	animation:  moveclouds 25s linear infinite;
+	will-change: scroll-position;
 }
 
 div.c3 {
@@ -59,7 +55,8 @@ div.c3 {
 	-webkit-animation: moveclouds 20s linear infinite;
 	-moz-animation: moveclouds 20s linear infinite;
     -o-animation: moveclouds 20s linear infinite;
-    animation:  moveclouds 20s linear infinite;
+	animation:  moveclouds 20s linear infinite;
+	will-change: scroll-position;
 }
 
 div.c4 {
@@ -87,7 +84,7 @@ div.c5 {
 	-webkit-animation: moveclouds 20s linear infinite;
 	-moz-animation: moveclouds 20s linear infinite;
     -o-animation: moveclouds 20s linear infinite;
-    animation: moveclouds 28s linear infinite;
+    animation: moveclouds 20s linear infinite;
 }
 
 
@@ -96,13 +93,13 @@ div.c5 {
 
 div#ground{
     position: absolute;
-    bottom: 0%;
+    bottom: 0;
     height: 64px;    
-    width: 250%;
-    background: url("../assets/img/ground_2.png");
-    background-repeat: repeat-x;
-    background-size: auto;
-    animation: moveground 3s linear infinite;
+    width: 3000px;
+    background: url("../assets/img/ground_2.png") repeat-x;
+	animation: moveground 3s linear infinite;
+	z-index: 100;
+	will-change: scroll-position;
 }
 
 
@@ -116,4 +113,14 @@ div#ground{
 @keyframes moveground{
     0% {margin-left: 0%;}
 	100% {margin-left: -166px;}
+}
+
+
+@keyframes moveground-complex{
+	0%{
+		transform: translate3d(0, 0, 0);
+	  }
+	  100%{
+		transform: translate3d(-1692px, 0, 0);
+	  }
 }
