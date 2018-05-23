@@ -1,11 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
 
 import { AppComponent } from './app.component';
 import { MainmenuComponent } from './mainmenu/mainmenu.component';
 import { NotfoundComponent } from './notfound/notfound.component';
+import { ProfileComponent } from './mainmenu/profile/profile.component';
 
 
 const routes: Routes = [
@@ -17,7 +19,8 @@ const routes: Routes = [
   declarations: [
     AppComponent,
     MainmenuComponent,
-    NotfoundComponent
+    NotfoundComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -25,6 +28,7 @@ const routes: Routes = [
       routes,
       {enableTracing: true}
     ),
+    AngularFontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

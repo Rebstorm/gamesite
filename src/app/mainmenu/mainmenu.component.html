@@ -1,3 +1,6 @@
-<div id="main-menu-container" class="hide-object">
+<div id="main-menu-container" (window:resize)="onResize($event)">
   <div class="main-menu-item button button-3d-babyblu button-pill button-jumbo">butts</div><div class="main-menu-item button button-3d-arcadia button-pill button-jumbo">profile</div><div class="main-menu-item button button-3d-action button-pill button-jumbo">twitter</div><div class="main-menu-item button button-3d-sun button-pill button-jumbo">github</div><div class="main-menu-item button button-3d-grenadine button-pill button-jumbo">tech</div>
 </div>
+<div id="menu-collapser" (click)="collapseClick($event)" class="menu-collapser button button-3d button-circle button-jumbo"><fa name="times-circle" ></fa></div>
+<div id="menu-extender" (click)="expandClick($event)" class="menu-collapser button button-3d button-circle button-jumbo"><fa name="bars" ></fa></div>
+

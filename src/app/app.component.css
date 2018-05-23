@@ -13,11 +13,10 @@ div#clouds{
 div.cloud {
 	width: 164px; height: 60px;
 	background: url("../assets/img/cloud_1.png");	
-	position: relative; 
+    position: relative; 
 }
 
 .cloud:before, .cloud:after {
-	position: absolute; 
 	position: absolute; top: -15px; left: 10px;
 		
 }
@@ -88,7 +87,7 @@ div.c5 {
 	-webkit-animation: moveclouds 20s linear infinite;
 	-moz-animation: moveclouds 20s linear infinite;
     -o-animation: moveclouds 20s linear infinite;
-    animation: moveclouds 20s linear infinite;
+    animation: moveclouds 28s linear infinite;
 }
 
 
@@ -99,11 +98,11 @@ div#ground{
     position: absolute;
     bottom: 0%;
     height: 64px;    
-    width: 100%;
+    width: 250%;
     background: url("../assets/img/ground_2.png");
     background-repeat: repeat-x;
     background-size: auto;
-    animation: fadein 300ms;
+    animation: moveground 3s linear infinite;
 }
 
 
@@ -112,4 +111,9 @@ div#ground{
 @keyframes moveclouds {
     0% {margin-left: 100%;}
 	100% {margin-left: -30%;}
+}
+
+@keyframes moveground{
+    0% {margin-left: 0%;}
+	100% {margin-left: -166px;}
 }

@@ -1,6 +1,5 @@
 /* THIS BE THE MAIN CSS FOR MAIN MENU, YO */
 
-
 div#main-menu-container{
     margin: 3em 0 0 0;
     position: relative;
@@ -31,18 +30,48 @@ div.main-menu-item:last-child{
 }
 
 
+div#menu-extender{
+    display: none;
+    position: absolute;
+    right: 0;
+    margin: 3em 15% 0 15%;
+    padding: 0;
+    text-align: center;
+    transition: cubic-bezier(1, 0, 0, 1) 300ms;
+    z-index: 100;
+    border-radius: 1em;
+    width: 2.5em;
+    animation: fadein 300ms;
+}
+
+
+div#menu-collapser{
+    display: none;
+    position: relative;
+    margin: 1em 1em 0.6em 1em;
+    right: 0;
+    padding: 0;
+    text-align: center;
+    transition: cubic-bezier(1, 0, 0, 1) 300ms;
+    z-index: 100;
+    animation: fadein 300ms;
+}
+
+
 /* MOBILE DISPLAYS, L*/
 @media screen and (max-width: 699px) {
 
     div#main-menu-container{
         margin: 0.3em 0 0 0;
         animation: none;
+        display: none;
     }
 
     div.main-menu-item{
-        margin: 0.6em 0 0.3em 0;
+        height: 2em;
+        line-height: 2em;
+        margin: 1em 1em 0.6em 1em;
         display: block;
-        height: inherit;
     }
 
     div.main-menu-item:first-child{
@@ -53,6 +82,22 @@ div.main-menu-item:last-child{
         border-radius: 0;
     }
 
+
+    div#menu-extender {
+        display: block;
+    }
+
+}
+
+
+/* General rules */
+
+.show{
+    display: block !important;
+}
+
+.hide{
+    display: none !important;
 }
 
 

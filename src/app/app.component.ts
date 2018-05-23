@@ -7,4 +7,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Pauls Magical Website';
+
+  onResize(event) {
+    console.log(event);
+  }
 }
+
+
+
+
