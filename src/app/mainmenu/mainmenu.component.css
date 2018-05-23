@@ -2,11 +2,13 @@
 
 
 div#main-menu-container{
+    margin: 3em 0 0 0;
     position: relative;
     display: block;
     animation: fadein 300ms;
     text-align: center;
     transition: cubic-bezier(1, 0, 0, 1) 300ms;
+    z-index: 100;
 }
 
 div#main-menu-container:hover{
@@ -15,6 +17,9 @@ div#main-menu-container:hover{
 
 div.main-menu-item{
     display: inline-block;
+    animation: bounce 2s infinite;
+    line-height: 4em;
+    height: 4em;
 }
 
 div.main-menu-item:first-child{
@@ -29,9 +34,15 @@ div.main-menu-item:last-child{
 /* MOBILE DISPLAYS, L*/
 @media screen and (max-width: 699px) {
 
+    div#main-menu-container{
+        margin: 0.3em 0 0 0;
+        animation: none;
+    }
+
     div.main-menu-item{
         margin: 0.6em 0 0.3em 0;
         display: block;
+        height: inherit;
     }
 
     div.main-menu-item:first-child{
@@ -51,4 +62,18 @@ div.main-menu-item:last-child{
 @keyframes fadein {
     from { opacity: 0; }
     to   { opacity: 1; }
+}
+
+@keyframes bounce {
+    0% {
+        margin-top: 0;
+    }
+
+    50% {
+        margin-top: 0.3em;
+    }
+
+    100% {
+        margin-top: 0;
+    }
 }

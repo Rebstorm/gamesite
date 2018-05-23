@@ -1,2 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
-@import 'assets/buttons.css'
+@import 'assets/buttons.css';
+
+/* Also a part of the sky */
+body {
+    overflow: hidden;
+    background: linear-gradient(to bottom, #90dffe 0%,#38a3d1 100%);
+    background-position: 0px 0px;
+    padding: 0 0;
+	margin: 0;
+	height: 100vh;
+}
+
