@@ -1,0 +1,46 @@
+/* Fragment rulez */
+div.fragment {
+    position: absolute;
+    top: 3em;
+    left: 12.5%;
+    width: 75%;
+    background: rgb(255, 251, 251);
+    border-radius: 2em;
+    z-index: 101;
+    transition: cubic-bezier(0.895, 0.03, 0.685, 0.22) 500ms;
+    animation: fadein 500ms;
+    box-shadow: 0 1px #FFFFFF inset, 0 1px 3px rgba(34, 25, 25, 0.4);
+}
+
+div#text-box-tech{
+    position: relative;
+    float: right;
+    padding: 1em;
+}
+
+div.close-box{
+    position: relative;
+    float:right;
+    padding: 1em 1em 1em 0;
+    right: 0;
+    z-index: 101;
+}
+
+div.close-box:hover{
+    cursor: pointer;
+}
+
+/* MOBILE DISPLAYS, L*/
+@media screen and (max-width: 791px) {
+    div.fragment{
+        top: 0;
+        height: 100vh;
+        border-radius: 0;
+        overflow-y: scroll;
+    }
+
+    div#text-box-tech{
+        position: relative;
+        float:none;
+    }
+}
