@@ -66,6 +66,23 @@ export class MainmenuComponent implements AfterViewInit {
     window.open("https://github.com/rebstorm", "_blank");
   }
   
+  sound = false;
+  toggleSound(){
+    let player = document.getElementById("song-controls");
+    let playerElement = document.getElementById("music-control");
+
+    player.volume = 0.3;
+    if(!this.sound){
+      this.sound = true;
+      player.play();
+      playerElement.innerHTML =  '<i class="fa fa-volume-off"></i>';
+    } else {
+      this.sound = false;
+      player.pause();
+      playerElement.innerHTML = '<i class="fa fa-volume-up"></i>';
+    }
+  }
+  
 
 
 
