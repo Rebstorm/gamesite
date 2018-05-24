@@ -68,7 +68,7 @@ export class MainmenuComponent implements AfterViewInit {
   
   sound = false;
   toggleSound(){
-    let player = document.getElementById("song-controls");
+    let player = <HTMLVideoElement> document.getElementById("song-controls");
     let playerElement = document.getElementById("music-control");
 
     player.volume = 0.3;

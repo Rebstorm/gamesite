@@ -8,12 +8,14 @@ import { AppComponent } from './app.component';
 import { MainmenuComponent } from './mainmenu/mainmenu.component';
 import { NotfoundComponent } from './notfound/notfound.component';
 import { ProfileComponent } from './mainmenu/profile/profile.component';
+import { TechComponent } from './mainmenu/tech/tech.component';
 
 
 
 const routes: Routes = [
   { path: '', component: MainmenuComponent },
   { path: 'profile', component: ProfileComponent},
+  { path: 'tech', component: TechComponent},
   { path: '**', component: NotfoundComponent }
 ]
 
@@ -22,7 +24,8 @@ const routes: Routes = [
     AppComponent,
     MainmenuComponent,
     NotfoundComponent,
-    ProfileComponent
+    ProfileComponent,
+    TechComponent
   ],
   imports: [
     BrowserModule,

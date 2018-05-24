@@ -104,6 +104,11 @@ div#ground{
 
 
 
+#song-controls{
+	display: none;
+}
+
+
 /* Moves from right to left */
 @keyframes moveclouds {
     0% {margin-left: 100%;}
