@@ -50,41 +50,41 @@ div.c3 {
 	-webkit-transform: scale(0.8);
 	-moz-transform: scale(0.8);
 	transform: scale(0.8);
-	opacity: 0.8; /*opacity proportional to the size*/
+	opacity: 0.6; /*opacity proportional to the size*/
 	
-	-webkit-animation: moveclouds 20s linear infinite;
-	-moz-animation: moveclouds 20s linear infinite;
-    -o-animation: moveclouds 20s linear infinite;
-	animation:  moveclouds 20s linear infinite;
+	-webkit-animation: moveclouds 22s linear infinite;
+	-moz-animation: moveclouds 22s linear infinite;
+    -o-animation: moveclouds 22s linear infinite;
+	animation:  moveclouds 22s linear infinite;
 	will-change: scroll-position;
 }
 
 div.c4 {
-	left: 200px; top: -325px;
+	left: 200px; top: -25px;
 	
 	-webkit-transform: scale(0.75);
 	-moz-transform: scale(0.75);
 	transform: scale(0.75);
-	opacity: 0.75; /*opacity proportional to the size*/
+	opacity: 0.4; /*opacity proportional to the size*/
 	
-	-webkit-animation: moveclouds 18s linear infinite;
-	-moz-animation: moveclouds 18s linear infinite;
-    -o-animation: moveclouds 18s linear infinite;
-    animation: moveclouds 18s linear infinite;
+	-webkit-animation: moveclouds 28s linear infinite;
+	-moz-animation: moveclouds 28s linear infinite;
+    -o-animation: moveclouds 28s linear infinite;
+    animation: moveclouds 28s linear infinite;
 }
 
 div.c5 {
-	left: 350px; top: -150px;
+	left: 25px; top: -150px;
 	
 	-webkit-transform: scale(0.8);
 	-moz-transform: scale(0.8);
 	transform: scale(0.8);
 	opacity: 0.8; /*opacity proportional to the size*/
 	
-	-webkit-animation: moveclouds 20s linear infinite;
-	-moz-animation: moveclouds 20s linear infinite;
-    -o-animation: moveclouds 20s linear infinite;
-    animation: moveclouds 20s linear infinite;
+	-webkit-animation: moveclouds 30s linear infinite;
+	-moz-animation: moveclouds 30s linear infinite;
+    -o-animation: moveclouds 30s linear infinite;
+    animation: moveclouds 30s linear infinite;
 }
 
 
@@ -95,9 +95,9 @@ div#ground{
     position: absolute;
     bottom: 0;
     height: 64px;    
-    width: 3000px;
+    width: 779%;
     background: url("../assets/img/ground_2.png") repeat-x;
-	animation: moveground 3s linear infinite;
+	animation: moveground-translate2d 30s linear infinite;
 	z-index: 100;
 	will-change: scroll-position;
 }
@@ -107,12 +107,7 @@ div#ground{
 /* Moves from right to left */
 @keyframes moveclouds {
     0% {margin-left: 100%;}
-	100% {margin-left: -30%;}
-}
-
-@keyframes moveground{
-    0% {margin-left: 0%;}
-	100% {margin-left: -166px;}
+	100% {margin-left: -40%;}
 }
 
 
@@ -120,7 +115,16 @@ div#ground{
 	0%{
 		transform: translate3d(0, 0, 0);
 	  }
-	  100%{
-		transform: translate3d(-1692px, 0, 0);
+	100%{
+		transform: translate3d(-300%, 0, 0);
+	}
+}
+
+@keyframes moveground-translate2d{
+	0%{
+		transform: translate(0, 0);
 	  }
+	100%{
+		transform: translate(-1292px, 0);
+	}
 }

@@ -45,25 +45,9 @@ export class MainmenuComponent implements AfterViewInit {
 
   }
 
-  addClass(c:string, id:string) {
-    var element, name, arr;
-    element = document.getElementById(id);
-    name = c;
-    arr = element.className.split(" ");
-    if (arr.indexOf(name) == -1) {
-        element.className += " " + name;
-    }
-  }
-  
-  removeClass(c:string, id:string) {
-    var element = document.getElementById(id);
-    element.className = element.className.replace(/\bc\b/g, "");
-  } 
-
-
   onResize(event) {
-    // remove button if above 699
-    if(event.target.innerWidth > 699){
+    // remove button if above 791
+    if(event.target.innerWidth > 791){
       this.expandClick(undefined);
       document.getElementById("menu-collapser").classList.add("hide");
       document.getElementById("menu-collapser").classList.remove("show");
@@ -71,6 +55,15 @@ export class MainmenuComponent implements AfterViewInit {
       this.collapseClick(undefined);
       
     }
+  }
+
+  linkTwitter(){
+    window.open("https://twitter.com/rebstorm", "_blank");
+    
+  }
+
+  linkGithub(){
+    window.open("https://github.com/rebstorm", "_blank");
   }
   
 
