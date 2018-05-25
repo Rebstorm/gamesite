@@ -17,6 +17,7 @@ div#text-box-paul{
     position: relative;
     float: right;
     padding: 1em;
+    font-size: 2em;
 }
 
 div.close-box{

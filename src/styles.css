@@ -1,6 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
 @import 'assets/buttons.css';
 
+
+
+@font-face {
+    font-family: 'cc_regular_alert';
+    src: url('assets/font/cc_red_alert_inet-webfont.woff2') format('woff2'),
+         url('assets/font/cc_red_alert_inet-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+
+
 /* Also a part of the sky */
 body {
     overflow: hidden;

@@ -1,5 +1,24 @@
 /* THIS BE THE MAIN CSS FOR MAIN MENU, YO */
 
+
+div#main-title-screen{
+    position: absolute;
+    font-family: 'cc_regular_alert', sans-serif;
+    font-size: 4em;
+    color: #fff;
+    text-shadow: 2px 2px #000;
+    left: 50%;
+    transform: translate(0, 150px);
+}
+
+
+div#main-title-screen > p{
+    position: relative;
+    left: -50%;
+    z-index: 50;
+}
+
+
 div#main-menu-container{
     margin: 3em 0 0 0;
     position: relative;
@@ -125,4 +144,9 @@ a.no-deco {
     100% {
         margin-top: 0;
     }
+}
+
+@keyframes zoomin {
+    from { transform: translate(0, 0) }
+    to { transform: translate(0, 150px)}
 }
