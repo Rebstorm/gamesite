@@ -31,7 +31,7 @@ const routes: Routes = [
     BrowserModule,
     RouterModule.forRoot(
       routes,
-      {enableTracing: true}
+      {enableTracing: false}
     ),
     AngularFontAwesomeModule
   ],

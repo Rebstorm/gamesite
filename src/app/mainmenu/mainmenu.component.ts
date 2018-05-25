@@ -66,6 +66,10 @@ export class MainmenuComponent implements AfterViewInit {
   linkGithub(){
     window.open("https://github.com/rebstorm", "_blank");
   }
+
+  linkXing(){
+    window.open("https://www.xing.com/profile/Paul_Jacks", "_blank");
+  }
   
   sound = false;
   toggleSound(){

@@ -15,9 +15,9 @@ div.fragment {
 
 div#text-box-paul{
     position: relative;
-    float: right;
-    padding: 1em;
-    font-size: 2em;
+    font-family: 'Quicksand', sans-serif;
+    padding: 2em 1em 1em 1em;
+    font-size: 1.4em;
 }
 
 div.close-box{
