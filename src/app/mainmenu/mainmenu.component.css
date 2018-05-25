@@ -26,7 +26,7 @@ div#main-menu-container{
     animation: fadein 300ms;
     text-align: center;
     transition: cubic-bezier(1, 0, 0, 1) 300ms;
-    z-index: 100;
+    z-index: 103;
 }
 
 div#main-menu-container:hover{
@@ -72,7 +72,7 @@ div#menu-collapser{
     padding: 0;
     text-align: center;
     transition: cubic-bezier(1, 0, 0, 1) 300ms;
-    z-index: 100;
+    z-index: 103;
     animation: fadein 300ms;
 }
 
