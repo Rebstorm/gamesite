@@ -9,12 +9,12 @@ import * as PIXI from 'pixi.js';
 })
 export class GameComponent implements AfterViewInit {
 
+  constructor() { }
+
   ngAfterViewInit(): void {
     this.removeWebPageElements();
     this.createGameField(); 
   }
-  constructor() { }
-
 
   removeWebPageElements(){
     document.getElementById("ground").style.display = "none";
@@ -23,66 +23,99 @@ export class GameComponent implements AfterViewInit {
 
 
   private pixiApp: PIXI.Application;
-  private gameGuy: PIXI.Sprite;
+  private gameGuy: RunningGuy; 
 
-
-  private stage = new PIXI.Container();
-
-  // Frames for the guy.
-  private GUY_FRAME_LIST = [
-    "../../assets/img/sprites/frame_0.gif",
-    "../../assets/img/sprites/frame_1.gif",
-    "../../assets/img/sprites/frame_2.gif",
-    "../../assets/img/sprites/frame_3.gif",
-    "../../assets/img/sprites/frame_4.gif",
-    "../../assets/img/sprites/frame_5.gif",
-    "../../assets/img/sprites/frame_6.gif",
-    "../../assets/img/sprites/frame_7.gif",
-  ];
-  
-  private textureCounter: number = 0;
-
-  private canvasWidthHeight = 400;
-
-  updateTexture(){
-    this.gameGuy.texture = PIXI.loader.resources[this.GUY_FRAME_LIST[this.textureCounter++]].texture;
-    if (this.textureCounter === this.GUY_FRAME_LIST.length) this.textureCounter = 0;
-  }
+  private canvasHeight = 400;
+  private canvasWidth = window.innerWidth;
 
   createGameField(){
-    this.pixiApp = new PIXI.Application(800, 400, { backgroundColor: 0x1099bb });
+    this.pixiApp = new PIXI.Application(this.canvasWidth, this.canvasHeight, { backgroundColor: 0x1099bb });
     document.getElementById("main-playboard").appendChild(this.pixiApp.view);
 
     // Load the stuff for the game.
-
-    PIXI.loader.add(this.GUY_FRAME_LIST).load(()=>{
+    PIXI.loader
+      .add("guy-atlas", "../../assets/img/sprites/char.json" )
+      .load(() => {
       this.createGameCharacter();
     });
 
   }
 
   createGameCharacter(): any {    
-    this.gameGuy = new PIXI.Sprite();
+
+    this.gameGuy = new RunningGuy(this.canvasHeight, this.canvasWidth, this.pixiApp);
+    this.pixiApp.stage.addChild(this.gameGuy);
   
-    this.stage.addChild(this.gameGuy);
-    this.gameGuy.scale.x = 0.06;
-    this.gameGuy.scale.y = 0.06;
+  }
+
+  
+}
+
+
+class RunningGuy extends PIXI.Sprite {
+  
+  pixiApp: PIXI.Application;
+  canvasHeight: number;
+  canvasWidth: number;
+
+  constructor(canvasHeight: number, canvasWidth: number, pixiApp : PIXI.Application) {
+    super();
+
+    this.pixiApp = pixiApp;
+    this.canvasHeight = canvasHeight;
+    this.canvasWidth = canvasWidth;
+
+    new PIXI.Sprite(
+      PIXI.loader.resources["guy-atlas"].textures["frame_0.gif"]
+    );
+
+    this.texture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
+
     // Set the transformation origin
-    this.gameGuy.anchor.set(0.5, 0.5);
-    this.gameGuy.anchor.set(0.5, 0.5);
-    this.resetGuy();
+    this.anchor.set(0.5, 0.5);
 
-    setInterval(this.updateTexture, 200);
-    this.stage.addChild(this.gameGuy);
+    this.x = canvasWidth / 2;
+    // Offset for ground and stuff.
+    this.y = canvasHeight / 1.15;
+    this.scale.x *= 1.25;
+    this.scale.y *= 1.25;
+
+    // Todo: find out what interactive means. But it sounds fancy. 
+    this.interactive = true;
+
+    
+    this.on("onmousedown", (e) => {
+      this.makeJump();
+    });
+
+    /*
+    this.pixiApp.ticker.add((delta: number): void => {
+    });
+    */
+
+    // We got to animate the dude, yo. 
+    window.setInterval(()=> { this.animateGuy() }, 100);
+  }
+
+  private guyTextureCounter: number = 0;
+  animateGuy() {
+      this.guyTextureCounter++;
+      if(this.guyTextureCounter < 8){
+        this.texture = PIXI.loader.resources["guy-atlas"].textures["frame_" + this.guyTextureCounter + ".gif"];
+      } else {
+        this.guyTextureCounter = 0;
+        this.texture = PIXI.loader.resources["guy-atlas"].textures["frame_0.gif"];
+      }
+  }
+
+  public makeJump(){
+    console.log("jump!")
+
+    
 
   }
 
 
-  resetGuy() {
-    this.gameGuy.x = this.canvasWidthHeight / 6;
-    this.gameGuy.y = this.canvasWidthHeight / 2.5;
-  }
 
-  
-  
+
 }
