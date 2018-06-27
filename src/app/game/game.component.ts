@@ -44,6 +44,8 @@ export class GameComponent implements AfterViewInit {
       }
     );
 
+    this.pixiApp.ticker.speed = 2;
+
   }
 
   createGameAssets(): any {    
@@ -83,22 +85,21 @@ export class GameComponent implements AfterViewInit {
         this.gameGuy.isJumping = true;
         // Adding the jumping speed.
         this.gameGuy.addJumpSpeed(-15);
-
-        this.pixiApp.ticker.addOnce( (e)=> { this.checkIfOnFloor(e) };
+        this.pixiApp.ticker.addOnce( (e)=> { this.checkIfOnFloor(e) });
         
       }
     
     });
   }
 
+  sinceLastFrameUpdate : number = 0;
   checkIfOnFloor(e){
     window.setTimeout(()=> {
       if(this.objectsColliding(this.gameGuy, this.floor))
         this.gameGuy.isJumping = false;
       else
         this.checkIfOnFloor(e);
-
-    }, 250)
+    }, 200)    
   }
 
   startGame(){
@@ -110,9 +111,15 @@ export class GameComponent implements AfterViewInit {
     // Creating collision between guy and floor. 
     this.pixiApp.ticker.add((delta) => {
         //console.log(this.objectsColliding(this.gameGuy, this.floor));
+        console.log("Collision check" + this.objectsColliding(this.gameGuy, this.floor))
         if(this.objectsColliding(this.gameGuy, this.floor) && !this.gameGuy.isJumping){
+
+          if(this.gameGuy.isJumpingUp){
           this.gameGuy.jumpingSpeedY = 0;
           this.gameGuy.position.y = this.canvasHeight / 1.25;
+          } else {
+
+          }
         }
     });
 
@@ -135,9 +142,10 @@ class RunningGuy extends PIXI.Sprite {
   canvasWidth: number;
 
   private GRAVITY = 9.8;
-  private GAME_SPEED_X = 40;
+  private GAME_SPEED = 2;
   public jumpingSpeedY: number = 0;
   public isJumping = false;
+  public isJumpingUp = false;
   private pixiApp: PIXI.Application;
   
 
@@ -159,14 +167,28 @@ class RunningGuy extends PIXI.Sprite {
     this.scale.x *= 1.50;
     this.scale.y *= 1.50;
 
-    // Todo: find out what interactive means. But it sounds fancy. 
-
-    document.addEventListener("keyup", (e) => {
-
-    });
-
     // We got to animate the dude, yo. 
-    pixiApp.ticker.add(()=> { this.animateGuy() });
+    let timeSinceLastFrameUpdate: number = 0;
+    pixiApp.ticker.add((delta)=> { 
+
+
+      // TODO: Maybe move this back? I dont know..
+      this.updateSprite();
+
+      if(timeSinceLastFrameUpdate < 5){
+        timeSinceLastFrameUpdate += delta;
+      } else {
+        this.animateGuy();
+        timeSinceLastFrameUpdate = 0;
+      }
+      timeSinceLastFrameUpdate++;
+    });
+    
+    /*
+    window.setInterval(()=>{
+      this.animateGuy();
+    }, 50);
+    */
 
     
   }
@@ -174,7 +196,6 @@ class RunningGuy extends PIXI.Sprite {
   private guyRunningTextureCounter: number = 0;
   private guyJumpingTextureCounter: number = 0;
   animateGuy() {
-
       if(this.isJumping){
         if(this.guyJumpingTextureCounter < 2){
           this.texture = PIXI.loader.resources["guy-atlas-falling"].textures["falling_" + this.guyJumpingTextureCounter + ".png"];
@@ -185,6 +206,7 @@ class RunningGuy extends PIXI.Sprite {
         }
   
       } else {
+
         if(this.guyRunningTextureCounter < 8){
           this.texture = PIXI.loader.resources["guy-atlas"].textures["frame_" + this.guyRunningTextureCounter + ".gif"];
           this.guyRunningTextureCounter++;
@@ -192,9 +214,8 @@ class RunningGuy extends PIXI.Sprite {
           this.guyRunningTextureCounter = 0;
           this.texture = PIXI.loader.resources["guy-atlas"].textures["frame_0.gif"];
         }
+      
       }
-
-      this.updateSprite();
   }
 
   
@@ -208,17 +229,16 @@ class RunningGuy extends PIXI.Sprite {
 
   updateSprite(){   
     this.jumpingSpeedY += this.GRAVITY / this.pixiApp.ticker.elapsedMS * 2 ;
+
+    if(this.jumpingSpeedY < 0){
+      this.isJumpingUp = false;
+    } else {
+      this.isJumpingUp = true;
+    }
     
     // todo: boolean grounded. 
     this.y += this.jumpingSpeedY;
-    
-    
-    //this.rotation = Math.atan(this.speedY / this.GAME_SPEED_X);
-
-    /*
-    let isCollide = false;
-    const { x, y, width, height } = this;
-    */
+  
   }
 
 
