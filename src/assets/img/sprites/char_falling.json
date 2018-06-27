@@ -1,0 +1,30 @@
+{"frames": {
+
+"falling_0.png":
+{
+	"frame": {"x":0,"y":0,"w":22,"h":37},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":22,"h":37},
+	"sourceSize": {"w":22,"h":37},
+	"pivot": {"x":0.5,"y":0.5}
+},
+"falling_1.png":
+{
+	"frame": {"x":0,"y":37,"w":22,"h":37},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":22,"h":37},
+	"sourceSize": {"w":22,"h":37},
+	"pivot": {"x":0.5,"y":0.5}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "char_falling.png",
+	"format": "RGBA8888",
+	"size": {"w":22,"h":74},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:1784fea6e0cd8c265c2e41ffb50a9dbe:070fa6fc6204967c6673a1d595ba3a16:8f2bece20853a96696b8304bdf11b211$"
+}
+}
