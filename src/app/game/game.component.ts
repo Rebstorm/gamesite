@@ -1,5 +1,8 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import * as PIXI from 'pixi.js';
+import Floor from './gameobjects/Floor';
+import RunningGuy from './gameobjects/RunningGuy';
+import Platform from './gameobjects/Platform';
 
 
 @Component({
@@ -25,7 +28,8 @@ export class GameComponent implements AfterViewInit {
 
   private pixiApp: PIXI.Application;
   private gameGuy: RunningGuy; 
-  private floor: Floor;
+  private groundFloor: Floor;
+  private firstFloor: Platform;
 
   private canvasHeight = 400;
   private canvasWidth = window.innerWidth;
@@ -52,8 +56,9 @@ export class GameComponent implements AfterViewInit {
     // Get our running guy.
     this.gameGuy = new RunningGuy(this.canvasHeight, this.canvasWidth, this.pixiApp);
 
-    // Get our ground.
-    this.floor = new Floor(this.canvasHeight, this.canvasWidth);
+    // Get our ground. The absolute base floor.
+    this.groundFloor = new Floor(this.canvasHeight, this.canvasWidth, 1, 1.15);
+    this.firstFloor = new Platform(this.canvasHeight, this.canvasWidth, 1, 1.4);
       
     /*  
     * Add the stuff to the scene.
@@ -62,22 +67,19 @@ export class GameComponent implements AfterViewInit {
 
     // Character
     this.pixiApp.stage.addChild(this.gameGuy);
-
     // BG
-    this.pixiApp.stage.addChild(this.floor);
+    this.pixiApp.stage.addChild(this.groundFloor);
+    this.pixiApp.stage.addChild(this.firstFloor);
 
     this.createEventHandlers();
-
-    this.createCollisionDetection();
-
-
+    this.createColliders();
     this.startGame();
   }
 
   createEventHandlers(){
 
     document.addEventListener('keydown', e => {
-      
+
       if(this.gameGuy.isJumping)
         return;
 
@@ -90,12 +92,26 @@ export class GameComponent implements AfterViewInit {
       }
     
     });
+
+    document.addEventListener('mousedown', e => {
+
+      if(this.gameGuy.isJumping){
+        return;
+      } else {
+        this.gameGuy.isJumping = true;
+        // Adding the jumping speed.
+        this.gameGuy.addJumpSpeed(-15);
+        this.pixiApp.ticker.addOnce( (e)=> { this.checkIfOnFloor(e) });
+      }        
+    
+
+    });
   }
 
   sinceLastFrameUpdate : number = 0;
   checkIfOnFloor(e){
     window.setTimeout(()=> {
-      if(this.objectsColliding(this.gameGuy, this.floor))
+      if(this.objectsColliding(this.gameGuy, this.groundFloor))
         this.gameGuy.isJumping = false;
       else
         this.checkIfOnFloor(e);
@@ -103,16 +119,22 @@ export class GameComponent implements AfterViewInit {
   }
 
   startGame(){
-    this.floor.startGround(this.pixiApp);
+    this.groundFloor.startGround(this.pixiApp);
+    this.firstFloor.startPlatform(this.pixiApp);
 
   }
 
-  createCollisionDetection(){
+
+  createColliders(): any {
+    this.createGroundFloorCollisionDetection();
+    this.createPlatformCollider();
+  }
+
+  createGroundFloorCollisionDetection(){
     // Creating collision between guy and floor. 
     this.pixiApp.ticker.add((delta) => {
         //console.log(this.objectsColliding(this.gameGuy, this.floor));
-        console.log("Collision check" + this.objectsColliding(this.gameGuy, this.floor))
-        if(this.objectsColliding(this.gameGuy, this.floor) && !this.gameGuy.isJumping){
+        if(this.objectsColliding(this.gameGuy, this.groundFloor) && !this.gameGuy.isJumping){
 
           if(this.gameGuy.isJumpingUp){
           this.gameGuy.jumpingSpeedY = 0;
@@ -125,163 +147,24 @@ export class GameComponent implements AfterViewInit {
 
   }
 
+  createPlatformCollider(){
+
+    // First platform collider
+    this.pixiApp.ticker.add((delta) => {
+
+      if(this.objectsColliding(this.gameGuy, this.firstFloor) && this.gameGuy.isJumping){
+        this.gameGuy.jumpingSpeedY = 0;
+        this.gameGuy.position.y = this.canvasHeight / 1.55;
+        this.gameGuy.isJumpingUp = false;
+      }
+
+    });
+  }
+
   objectsColliding(a:PIXI.Sprite, b: PIXI.Sprite): boolean{
     let ab = a.getBounds();
     let bb = b.getBounds();
 
     return ab.x + ab.width > bb.x && ab.x < bb.x + bb.width && ab.y + ab.height > bb.y && ab.y < bb.y + bb.height;
-  }
-
-  
-}
-
-
-class RunningGuy extends PIXI.Sprite {
-
-  canvasHeight: number;
-  canvasWidth: number;
-
-  private GRAVITY = 9.8;
-  private GAME_SPEED = 2;
-  public jumpingSpeedY: number = 0;
-  public isJumping = false;
-  public isJumpingUp = false;
-  private pixiApp: PIXI.Application;
-  
-
-  constructor(canvasHeight: number, canvasWidth: number, pixiApp: PIXI.Application) {
-    super();
-    this.pixiApp = pixiApp;
-    this.canvasHeight = canvasHeight;
-    this.canvasWidth = canvasWidth;
-
-    this.texture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
-
-    // Set the transformation origin
-    //this.anchor.set(0.5, 0.5);
-
-    this.x = canvasWidth / 2;
-    // Offset for ground and stuff.
-    this.y = canvasHeight / 1.25;
-
-    this.scale.x *= 1.50;
-    this.scale.y *= 1.50;
-
-    // We got to animate the dude, yo. 
-    let timeSinceLastFrameUpdate: number = 0;
-    pixiApp.ticker.add((delta)=> { 
-
-
-      // TODO: Maybe move this back? I dont know..
-      this.updateSprite();
-
-      if(timeSinceLastFrameUpdate < 5){
-        timeSinceLastFrameUpdate += delta;
-      } else {
-        this.animateGuy();
-        timeSinceLastFrameUpdate = 0;
-      }
-      timeSinceLastFrameUpdate++;
-    });
-    
-    /*
-    window.setInterval(()=>{
-      this.animateGuy();
-    }, 50);
-    */
-
-    
-  }
-
-  private guyRunningTextureCounter: number = 0;
-  private guyJumpingTextureCounter: number = 0;
-  animateGuy() {
-      if(this.isJumping){
-        if(this.guyJumpingTextureCounter < 2){
-          this.texture = PIXI.loader.resources["guy-atlas-falling"].textures["falling_" + this.guyJumpingTextureCounter + ".png"];
-          this.guyJumpingTextureCounter++;
-        } else {
-          this.texture = PIXI.loader.resources["guy-atlas-falling"].textures["falling_0.png"];
-          this.guyJumpingTextureCounter = 0;
-        }
-  
-      } else {
-
-        if(this.guyRunningTextureCounter < 8){
-          this.texture = PIXI.loader.resources["guy-atlas"].textures["frame_" + this.guyRunningTextureCounter + ".gif"];
-          this.guyRunningTextureCounter++;
-        } else {
-          this.guyRunningTextureCounter = 0;
-          this.texture = PIXI.loader.resources["guy-atlas"].textures["frame_0.gif"];
-        }
-      
-      }
-  }
-
-  
-
-  addJumpSpeed(speedInc: number) {
-    this.jumpingSpeedY += speedInc;
-    //this.jumpingSpeedY = Math.max(-this.GRAVITY, this.jumpingSpeedY);
-    //console.log(Math.max(-this.GRAVITY, this.jumpingSpeedY));
-  }
-  
-
-  updateSprite(){   
-    this.jumpingSpeedY += this.GRAVITY / this.pixiApp.ticker.elapsedMS * 2 ;
-
-    if(this.jumpingSpeedY < 0){
-      this.isJumpingUp = false;
-    } else {
-      this.isJumpingUp = true;
-    }
-    
-    // todo: boolean grounded. 
-    this.y += this.jumpingSpeedY;
-  
-  }
-
-
-
-
-}
-
-// Tileposition is the best
-class Floor extends PIXI.extras.TilingSprite {
-  
-  private canvasHeight: number;
-  private canvasWidth: number;
-
-  private GAME_SPEED_X = 40;
-
-  constructor(canvasHeight: number, canvasWidth: number){
-    super(PIXI.loader.resources["floor"].texture, canvasWidth, canvasHeight);
-
-    this.canvasHeight = canvasHeight;
-    this.canvasWidth = canvasWidth;
-
-    //this.x = canvasWidth;
-    // Offset for ground and stuff.
-    this.y = canvasHeight / 1.15;
-
-    this.tileScale.y = 0.8;
-    this.tileScale.x = 0.8;
-    this.tilePosition.x = 0;
-    this.tilePosition.y = 0;
-  }
-
-
-  public startGround(pixiApp : PIXI.Application){
-    pixiApp.ticker.add(delta => this.move(delta));
-  }
-
-  private move(delta:number){
-    
-    // moving the tileposition with tileposition x minus delta, modulus texture width times the scale of the texture. 
-    this.tilePosition.x = (this.tilePosition.x - delta) % ( this.texture.width * 0.8 );
-
-  }
-
-
-
+  }  
 }

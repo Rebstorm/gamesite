@@ -12,8 +12,6 @@ import { GameComponent } from './game/game.component';
 // External stuff
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
-
-
 const routes: Routes = [
   { path: '', component: MainmenuComponent },
   { path: 'profile', component: ProfileComponent},
