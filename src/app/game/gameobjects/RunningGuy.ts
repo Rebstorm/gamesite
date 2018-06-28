@@ -45,13 +45,6 @@ export default class RunningGuy extends PIXI.Sprite {
         timeSinceLastFrameUpdate++;
       });
       
-      /*
-      window.setInterval(()=>{
-        this.animateGuy();
-      }, 50);
-      */
-  
-      
     }
   
     private guyRunningTextureCounter: number = 0;
@@ -89,17 +82,32 @@ export default class RunningGuy extends PIXI.Sprite {
     
   
     updateSprite(){   
-      this.jumpingSpeedY += this.GRAVITY / this.pixiApp.ticker.elapsedMS * 2 ;
-  
-      if(this.jumpingSpeedY < 0){
+      
+      if(this.jumpingSpeedY > 0){
         this.isJumpingUp = false;
       } else {
         this.isJumpingUp = true;
       }
+
+      /*
+      if(!this.isJumping){
+        this.jumpingSpeedY = 0;
+      }
+      */
       
+
+      console.log("is jumping: " + this.isJumping 
+      + " speed: " + this.jumpingSpeedY)
+
+      this.jumpingSpeedY += this.addGravity();
+
       // todo: boolean grounded. 
       this.y += this.jumpingSpeedY;
     
+    }
+
+    addGravity() : number {
+      return this.GRAVITY / this.pixiApp.ticker.elapsedMS * 2 ;
     }
   
   

@@ -136,7 +136,7 @@ export class GameComponent implements AfterViewInit {
         //console.log(this.objectsColliding(this.gameGuy, this.floor));
         if(this.objectsColliding(this.gameGuy, this.groundFloor) && !this.gameGuy.isJumping){
 
-          if(this.gameGuy.isJumpingUp){
+          if(!this.gameGuy.isJumpingUp){
           this.gameGuy.jumpingSpeedY = 0;
           this.gameGuy.position.y = this.canvasHeight / 1.25;
           } else {
@@ -147,16 +147,23 @@ export class GameComponent implements AfterViewInit {
 
   }
 
+  lastSpeed : number = 0; 
+  onPlatform: boolean = false;
   createPlatformCollider(){
 
     // First platform collider
     this.pixiApp.ticker.add((delta) => {
 
-      if(this.objectsColliding(this.gameGuy, this.firstFloor) && this.gameGuy.isJumping){
-        this.gameGuy.jumpingSpeedY = 0;
-        this.gameGuy.position.y = this.canvasHeight / 1.55;
-        this.gameGuy.isJumpingUp = false;
-      }
+        if(this.objectsColliding(this.gameGuy, this.firstFloor) 
+        && this.gameGuy.jumpingSpeedY > 2){
+          this.gameGuy.jumpingSpeedY = 0;
+          this.gameGuy.position.y = this.canvasHeight / 1.55;
+          this.gameGuy.isJumpingUp = false;
+          this.gameGuy.isJumping = false;
+          this.onPlatform = true;
+        } 
+    
+
 
     });
   }
@@ -166,5 +173,5 @@ export class GameComponent implements AfterViewInit {
     let bb = b.getBounds();
 
     return ab.x + ab.width > bb.x && ab.x < bb.x + bb.width && ab.y + ab.height > bb.y && ab.y < bb.y + bb.height;
-  }  
+  }
 }
