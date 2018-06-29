@@ -94,10 +94,7 @@ export default class RunningGuy extends PIXI.Sprite {
         this.jumpingSpeedY = 0;
       }
       */
-      
-
-      console.log("is jumping: " + this.isJumping 
-      + " speed: " + this.jumpingSpeedY)
+    
 
       this.jumpingSpeedY += this.addGravity();
 
