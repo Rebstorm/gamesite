@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js';
 import Floor from '../gameobjects/Floor';
 import RunningGuy from '../gameobjects/RunningGuy';
 import Platform from '../gameobjects/Platform';
+import Star from '../gameobjects/Star';
 
 export default class RunningGame extends PIXI.Application{
     
@@ -17,13 +18,19 @@ export default class RunningGame extends PIXI.Application{
       this.createGameField();
     }
     
-    private pixiApp: PIXI.Application;
+    
+    public pixiApp: PIXI.Application;
     private gameGuy: RunningGuy; 
     private groundFloor: Floor;
     private firstFloor: Platform;
+    private secondFloor: Platform;
+    private thirdFloor: Platform;
+    public stars: Array<Star> = [];
   
     private canvasHeight = 400;
     private canvasWidth = 800; 
+
+    public score : number = 0;
   
     public gameObjectList : Array<PIXI.Sprite> = [];
     
@@ -41,15 +48,20 @@ export default class RunningGame extends PIXI.Application{
         .add("guy-atlas", "../../assets/img/sprites/char.json" )
         .add("guy-atlas-falling", "../../assets/img/sprites/char_falling.json")
         .add("floor", "../../assets/img/ground_2.png")
+        .add("star", "../../assets/img/sprites/star.json")
         .load(() => {
           this.createGameAssets();
         }
       );
-  
+      
+
+      // Setting the speed of the game. Because screw everything else. 
       this.pixiApp.ticker.speed = 2;
   
     }
-  
+
+    
+    starCounter: number = 0; 
     createGameAssets(): any {    
       // Get our running guy.
       this.gameGuy = new RunningGuy(this.canvasHeight, this.canvasWidth, this.pixiApp);
@@ -57,17 +69,39 @@ export default class RunningGame extends PIXI.Application{
       // Get our ground. The absolute base floor.
       this.groundFloor = new Floor(this.canvasHeight, this.canvasWidth, 1, 1.15);
       this.firstFloor = new Platform(this.canvasHeight, this.canvasWidth, 1, 1.4);
-        
+      this.secondFloor = new Platform(this.canvasHeight, this.canvasWidth, 800, 1.4);
+
+      // This is pointz yo. 
+      RunningGame.game.stars.push(new Star(this.canvasHeight, this.canvasWidth, 1.2, 4, this.pixiApp, "star"+this.starCounter++));
+      
       /*  
       * Add the stuff to the scene.
       * 
       */
-  
       this.addGameObjects();
+      this.addMoreStars();
   
       this.createEventHandlers();
       this.createColliders();
       this.startGame();
+      this.listenToScoreChanges();
+    }
+
+    addMoreStars(){
+      window.setInterval( e => {
+        if(this.stars.length < 25){
+          let newStar: Star = new Star(this.canvasHeight, this.canvasWidth, 1.5 + (0.4 * Math.random()), this.canvasWidth, this.pixiApp, "star"+this.starCounter++);
+          this.stars.push(newStar);
+          this.pixiApp.stage.addChild(newStar);
+          console.log("star added: " + this.stars.length);
+        }
+      }, 1000);
+    }
+
+    listenToScoreChanges(){
+      window.setInterval(e => {
+        console.log("score: " + this.score);
+      }, 100);
     }
   
     addGameObjects(){
@@ -75,10 +109,16 @@ export default class RunningGame extends PIXI.Application{
       this.pixiApp.stage.addChild(this.gameGuy);
       // BG
       this.pixiApp.stage.addChild(this.groundFloor);
-      this.pixiApp.stage.addChild(this.firstFloor);
+
+      this.pixiApp.stage.addChild(this.firstFloor);  
+      this.pixiApp.stage.addChild(this.secondFloor);
+
+      this.stars.forEach( star => {
+        console.log(star);
+        this.pixiApp.stage.addChild(star);
+      });
   
-  
-      this.gameObjectList.push(this.gameGuy, this.groundFloor, this.firstFloor);
+      this.gameObjectList.push(this.gameGuy, this.groundFloor, this.firstFloor, this.secondFloor);
   
     }
   
@@ -100,7 +140,7 @@ export default class RunningGame extends PIXI.Application{
       });
   
       document.addEventListener('mousedown', e => {
-  
+
         if(this.gameGuy.isJumping){
           return;
         } else {
@@ -110,7 +150,6 @@ export default class RunningGame extends PIXI.Application{
           this.pixiApp.ticker.addOnce( (e)=> { this.checkIfOnFloor(e) });
         }        
       
-  
       });
     }
   
@@ -127,6 +166,7 @@ export default class RunningGame extends PIXI.Application{
     startGame(){
       this.groundFloor.startGround(this.pixiApp);
       this.firstFloor.startPlatform(this.pixiApp);
+      this.secondFloor.startPlatform(this.pixiApp);
   
     }
   
@@ -171,6 +211,18 @@ export default class RunningGame extends PIXI.Application{
       
   
   
+      });
+
+      this.pixiApp.ticker.add((delta) => {
+        if(this.objectsColliding(this.gameGuy, this.secondFloor) 
+          && this.gameGuy.jumpingSpeedY > 2){
+            this.gameGuy.jumpingSpeedY = 0;
+            this.gameGuy.position.y = this.canvasHeight / 1.55;
+            this.gameGuy.isJumpingUp = false;
+            this.gameGuy.isJumping = false;
+            this.onPlatform = true;
+          } 
+
       });
     }
   

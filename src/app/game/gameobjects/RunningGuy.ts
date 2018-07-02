@@ -15,8 +15,8 @@ export default class RunningGuy extends PIXI.Sprite {
       this.pixiApp = pixiApp;
       this.canvasHeight = canvasHeight;
       this.canvasWidth = canvasWidth;
-  
       this.texture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
+      this.name = "runningGuy";
   
       // Set the transformation origin
       //this.anchor.set(0.5, 0.5);
@@ -87,14 +87,7 @@ export default class RunningGuy extends PIXI.Sprite {
         this.isJumpingUp = false;
       } else {
         this.isJumpingUp = true;
-      }
-
-      /*
-      if(!this.isJumping){
-        this.jumpingSpeedY = 0;
-      }
-      */
-    
+      }    
 
       this.jumpingSpeedY += this.addGravity();
 
@@ -106,8 +99,5 @@ export default class RunningGuy extends PIXI.Sprite {
     addGravity() : number {
       return this.GRAVITY / this.pixiApp.ticker.elapsedMS * 2 ;
     }
-  
-  
-  
-  
+    
   }
