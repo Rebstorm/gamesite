@@ -91,6 +91,7 @@ export default class Star extends PIXI.Sprite {
             this.hasCollided = true;
             RunningGame.game.stars.splice(RunningGame.game.stars.findIndex( star => star.spriteName == this.spriteName), 1);
             RunningGame.game.score += 100;
+            RunningGame.game.scoreText.text = "Score: " + RunningGame.game.score;
         }
     }
 

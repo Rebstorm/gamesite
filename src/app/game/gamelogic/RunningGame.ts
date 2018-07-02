@@ -26,9 +26,11 @@ export default class RunningGame extends PIXI.Application{
     private secondFloor: Platform;
     private thirdFloor: Platform;
     public stars: Array<Star> = [];
+
+    public scoreText: PIXI.Text;
   
     private canvasHeight = 400;
-    private canvasWidth = 800; 
+    private canvasWidth = window.innerWidth; 
 
     public score : number = 0;
   
@@ -50,14 +52,16 @@ export default class RunningGame extends PIXI.Application{
         .add("floor", "../../assets/img/ground_2.png")
         .add("star", "../../assets/img/sprites/star.json")
         .load(() => {
-          this.createGameAssets();
+          this.createGameMenu();
         }
       );
-      
-
       // Setting the speed of the game. Because screw everything else. 
       this.pixiApp.ticker.speed = 2;
-  
+    }
+
+    createGameMenu(){
+
+      this.createGameAssets();
     }
 
     
@@ -68,8 +72,12 @@ export default class RunningGame extends PIXI.Application{
   
       // Get our ground. The absolute base floor.
       this.groundFloor = new Floor(this.canvasHeight, this.canvasWidth, 1, 1.15);
-      this.firstFloor = new Platform(this.canvasHeight, this.canvasWidth, 1, 1.4);
-      this.secondFloor = new Platform(this.canvasHeight, this.canvasWidth, 800, 1.4);
+      this.firstFloor = new Platform(this.canvasHeight, this.canvasWidth, 1, 1.4, 2);
+      this.secondFloor = new Platform(this.canvasHeight, this.canvasWidth, 2, 1.4, 3);
+      this.thirdFloor = new Platform(this.canvasHeight, this.canvasWidth, 1.5, 1.4, 5);
+
+      this.scoreText = new PIXI.Text('',{fontFamily : 'cc_regular_alert', fontSize: 24, fill : "#fff", align : 'center'});
+
 
       // This is pointz yo. 
       RunningGame.game.stars.push(new Star(this.canvasHeight, this.canvasWidth, 1.2, 4, this.pixiApp, "star"+this.starCounter++));
@@ -93,14 +101,12 @@ export default class RunningGame extends PIXI.Application{
           let newStar: Star = new Star(this.canvasHeight, this.canvasWidth, 1.5 + (0.4 * Math.random()), this.canvasWidth, this.pixiApp, "star"+this.starCounter++);
           this.stars.push(newStar);
           this.pixiApp.stage.addChild(newStar);
-          console.log("star added: " + this.stars.length);
         }
       }, 1000);
     }
 
     listenToScoreChanges(){
       window.setInterval(e => {
-        console.log("score: " + this.score);
       }, 100);
     }
   
@@ -112,6 +118,9 @@ export default class RunningGame extends PIXI.Application{
 
       this.pixiApp.stage.addChild(this.firstFloor);  
       this.pixiApp.stage.addChild(this.secondFloor);
+      this.pixiApp.stage.addChild(this.thirdFloor);
+
+      this.pixiApp.stage.addChild(this.scoreText);
 
       this.stars.forEach( star => {
         console.log(star);
@@ -160,7 +169,7 @@ export default class RunningGame extends PIXI.Application{
           this.gameGuy.isJumping = false;
         else
           this.checkIfOnFloor(e);
-      }, 200)    
+      }, 50)    
     }
   
     startGame(){
@@ -212,9 +221,22 @@ export default class RunningGame extends PIXI.Application{
   
   
       });
-
+      // Second
       this.pixiApp.ticker.add((delta) => {
         if(this.objectsColliding(this.gameGuy, this.secondFloor) 
+          && this.gameGuy.jumpingSpeedY > 2){
+            this.gameGuy.jumpingSpeedY = 0;
+            this.gameGuy.position.y = this.canvasHeight / 1.55;
+            this.gameGuy.isJumpingUp = false;
+            this.gameGuy.isJumping = false;
+            this.onPlatform = true;
+          } 
+
+      });
+
+      //Third
+      this.pixiApp.ticker.add((delta) => {
+        if(this.objectsColliding(this.gameGuy, this.thirdFloor) 
           && this.gameGuy.jumpingSpeedY > 2){
             this.gameGuy.jumpingSpeedY = 0;
             this.gameGuy.position.y = this.canvasHeight / 1.55;
