@@ -53,6 +53,10 @@ export default class DangerousObject extends PIXI.Sprite {
         RunningGame.game.pixiApp.ticker.add(e => { this.startDanger(e) } , RunningGame.game);
     }
 
+    stopStars(){
+        this.pixiApp.ticker.remove(this.startDanger, RunningGame.game);
+    }
+
     timeSinceLastFrameUpdate: number = 0;
     startDanger(delta: number){
                
@@ -77,8 +81,13 @@ export default class DangerousObject extends PIXI.Sprite {
             this.position.x -= delta;
         } else{
             this.position.x = this.startPosition;
+            // Do we want to remove the stuff? I dont think we do.
+            /*
             RunningGame.game.pixiApp.ticker.remove(e => { this.startDanger(e) } , RunningGame.game);
+            this.pixiApp.stage.removeChild(this);
             RunningGame.game.dangers.splice(RunningGame.game.dangers.findIndex( danger =>  danger.spriteName == this.spriteName, 1));
+            console.log("removed snail")
+            */
         }
     }
 
@@ -96,11 +105,21 @@ export default class DangerousObject extends PIXI.Sprite {
 
     hasCollided = false;
     isColliding(){
+
+        if(!this || !this.pixiApp.stage.getChildByName("floor") || 
+        !this.pixiApp.stage.getChildByName("firstFloor") ||
+        !this.pixiApp.stage.getChildByName("secondFloor") || 
+        !this.pixiApp.stage.getChildByName("thirdFloor")){
+            return;
+        }
+
         if(this.objectsColliding(this, this.pixiApp.stage.getChildByName("runningGuy") as Sprite) 
             && !this.hasCollided){
+            RunningGame.game.pixiApp.ticker.remove(e => { this.stopDanger(e) } , RunningGame.game);
             this.pixiApp.stage.removeChild(this);
             this.hasCollided = true;
             console.log("you ded!! lololol");
+            RunningGame.game.endGame();
         }
     }
 
@@ -110,7 +129,7 @@ export default class DangerousObject extends PIXI.Sprite {
         if(this.hasLanded)
             return;
         else{
-
+        
             // Dirty but effective. Keep falling until you hit the ground.
             if(this.objectsColliding(this, this.pixiApp.stage.getChildByName("floor") as Sprite) || 
                 this.objectsColliding(this, this.pixiApp.stage.getChildByName("firstFloor") as Sprite) ||

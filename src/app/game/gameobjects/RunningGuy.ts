@@ -1,3 +1,5 @@
+import RunningGame from "../gamelogic/RunningGame";
+
 export default class RunningGuy extends PIXI.Sprite {
 
     canvasHeight: number;
@@ -71,9 +73,7 @@ export default class RunningGuy extends PIXI.Sprite {
           }
         
         }
-    }
-  
-    
+    }    
   
     addJumpSpeed(speedInc: number) {
       this.jumpingSpeedY += speedInc;

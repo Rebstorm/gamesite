@@ -5,13 +5,11 @@ import Platform from '../gameobjects/Platform';
 import Star from '../gameobjects/Star';
 import DangerousObject from '../gameobjects/DangerousObject';
 
-export default class RunningGame extends PIXI.Application{
+export default class RunningGame {
     
     public static game : RunningGame = new RunningGame();
 
-    constructor(){
-      super();
-      
+    constructor(){      
     }
     
     initialize(){
@@ -21,7 +19,7 @@ export default class RunningGame extends PIXI.Application{
     
     
     public pixiApp: PIXI.Application;
-    private gameGuy: RunningGuy; 
+    public gameGuy: RunningGuy; 
     private groundFloor: Floor;
     private firstFloor: Platform;
     private secondFloor: Platform;
@@ -35,8 +33,6 @@ export default class RunningGame extends PIXI.Application{
     private canvasWidth = window.innerWidth; 
 
     public score : number = 0;
-  
-    public gameObjectList : Array<PIXI.Sprite> = [];
     
     removeWebPageElements(){
       document.getElementById("ground").style.display = "none";
@@ -45,8 +41,9 @@ export default class RunningGame extends PIXI.Application{
   
     createGameField(){
       this.pixiApp = new PIXI.Application(this.canvasWidth, this.canvasHeight, { backgroundColor: 0x1099bb });
-      document.getElementById("main-playboard").appendChild(this.pixiApp.view);
-  
+      var canvas = document.getElementById("main-playboard");
+      canvas.appendChild(this.pixiApp.view);
+
       // Load the stuff for the game.
       PIXI.loader
         .add("guy-atlas", "../../assets/img/sprites/char.json" )
@@ -64,10 +61,41 @@ export default class RunningGame extends PIXI.Application{
     }
 
     createGameMenu(){
-
       this.createGameAssets();
     }
 
+    endGame(){
+      //this.pixiApp.ticker.stop();
+     
+      //this.pixiApp.ticker.remove
+      //this.createGameMenu();
+      
+      // Waiting for current loops to run out.. not elegant but works.
+      //window.setTimeout( e=> this.recreateGame(), 200);
+
+      this.gameGuy.y = 10;
+      this.gameGuy.alpha = 0;
+      this.pixiApp.ticker.stop();
+      window.setTimeout(e => {
+
+        this.stars.forEach(star => {
+          star.stopStars();
+        })
+
+        RunningGame.game.pixiApp.stage.removeChildren();
+        RunningGame.game.pixiApp.ticker.start();
+      }, 200)
+      
+      
+      this.createGameAssets();
+      
+    }
+
+    makeGameMenu(){
+
+      
+
+    }
     
     starCounter: number = 0; 
     dangerCounter: number = 0;
@@ -97,24 +125,26 @@ export default class RunningGame extends PIXI.Application{
       this.listenToScoreChanges();
     }
 
+    starTicker;
     addMoreStars(){
-      window.setInterval( e => {
+      this.starTicker = window.setInterval( e => {
         if(this.stars.length < 25){
           let newStar: Star = new Star(this.canvasHeight, this.canvasWidth, 1.5 + (0.4 * Math.random()), this.canvasWidth, this.pixiApp, "star"+this.starCounter++);
           this.stars.push(newStar);
-          this.pixiApp.stage.addChild(newStar);
+          RunningGame.game.pixiApp.stage.addChild(newStar);
         }
       }, 1000);
     }
-
+    
+    dangerTicker; 
     addMoreDanger(){
-      window.setInterval( e => {
+      this.dangerTicker = window.setInterval( e => {
         if(this.dangers.length < 3){
           let newDanger: DangerousObject = new DangerousObject(this.canvasHeight, this.canvasWidth, 2, this.canvasWidth, this.pixiApp, "danger"+this.dangerCounter++)
           this.dangers.push(newDanger);
-          this.pixiApp.stage.addChild(newDanger);
+          RunningGame.game.pixiApp.stage.addChild(newDanger);
         }
-      }, 1000)
+      }, 1500)
     }
 
     listenToScoreChanges(){
@@ -138,8 +168,6 @@ export default class RunningGame extends PIXI.Application{
         this.pixiApp.stage.addChild(star);
       });
   
-      this.gameObjectList.push(this.gameGuy, this.groundFloor, this.firstFloor, this.secondFloor);
-  
     }
   
     createEventHandlers(){
@@ -154,7 +182,7 @@ export default class RunningGame extends PIXI.Application{
           // Adding the jumping speed.
           this.gameGuy.addJumpSpeed(-15);
           this.gameGuy.multiplier = 1.2;
-          this.pixiApp.ticker.addOnce( (e)=> { this.checkIfOnFloor(e) });
+          RunningGame.game.pixiApp.ticker.addOnce( (e)=> { this.checkIfOnFloor(e) });
           
         }
       
@@ -167,8 +195,8 @@ export default class RunningGame extends PIXI.Application{
         } else {
           this.gameGuy.isJumping = true;
           // Adding the jumping speed.
-          this.gameGuy.addJumpSpeed(-15);
-          this.pixiApp.ticker.addOnce( (e)=> { this.checkIfOnFloor(e) });
+          RunningGame.game.gameGuy.addJumpSpeed(-15);
+          RunningGame.game.pixiApp.ticker.addOnce( (e)=> { this.checkIfOnFloor(e) });
         }        
       
       });
@@ -178,9 +206,9 @@ export default class RunningGame extends PIXI.Application{
     checkIfOnFloor(e){
       window.setTimeout(()=> {
         if(this.objectsColliding(this.gameGuy, this.groundFloor))
-          this.gameGuy.isJumping = false;
+          RunningGame.game.gameGuy.isJumping = false;
         else
-          this.checkIfOnFloor(e);
+          RunningGame.game.checkIfOnFloor(e);
       }, 50)    
     }
   
@@ -214,14 +242,13 @@ export default class RunningGame extends PIXI.Application{
     }
   
     createPlatformCollider(){
-  
       // platform collider
       this.pixiApp.ticker.add((delta) => {
   
           if((this.objectsColliding(this.gameGuy, this.firstFloor) || 
           this.objectsColliding(this.gameGuy, this.secondFloor) ||
           this.objectsColliding(this.gameGuy, this.thirdFloor))
-          && this.gameGuy.jumpingSpeedY > 1){
+          && this.gameGuy.jumpingSpeedY > 1.8){
             this.gameGuy.jumpingSpeedY = 0;
             this.gameGuy.position.y = this.canvasHeight / 1.55;
             this.gameGuy.isJumpingUp = false;
@@ -243,4 +270,5 @@ export default class RunningGame extends PIXI.Application{
   
       return ab.x + ab.width > bb.x && ab.x < bb.x + bb.width && ab.y + ab.height > bb.y && ab.y < bb.y + bb.height;
     }
+
   }
