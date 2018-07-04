@@ -3,10 +3,11 @@ export default class RunningGuy extends PIXI.Sprite {
     canvasHeight: number;
     canvasWidth: number;
   
-    private GRAVITY = 9.8;
+    public GRAVITY = 9.8;
     public jumpingSpeedY: number = 0;
     public isJumping = false;
     public isJumpingUp = false;
+    public isOnPlatform = false;
     private pixiApp: PIXI.Application;
     
   
@@ -80,7 +81,7 @@ export default class RunningGuy extends PIXI.Sprite {
       //console.log(Math.max(-this.GRAVITY, this.jumpingSpeedY));
     }
     
-  
+    public multiplier = 1.2;
     updateSprite(){   
       
       if(this.jumpingSpeedY > 0){
@@ -89,15 +90,19 @@ export default class RunningGuy extends PIXI.Sprite {
         this.isJumpingUp = true;
       }    
 
-      this.jumpingSpeedY += this.addGravity();
+      if(this.isOnPlatform){
+        this.y = this.canvasHeight / 1.55;
+      } else {
+        this.jumpingSpeedY += this.addGravity();
+        this.y += this.jumpingSpeedY;
+      }
 
-      // todo: boolean grounded. 
-      this.y += this.jumpingSpeedY;
+      
     
     }
 
     addGravity() : number {
-      return this.GRAVITY / this.pixiApp.ticker.elapsedMS * 2 ;
+      return this.GRAVITY / this.pixiApp.ticker.elapsedMS * this.multiplier ;
     }
     
   }

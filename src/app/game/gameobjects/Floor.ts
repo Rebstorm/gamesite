@@ -10,12 +10,15 @@ export default class Floor extends PIXI.extras.TilingSprite {
     private canvasWidth: number;
 
     private isGround : boolean;
-
+    private spriteName : string;
     private speed: number = 1;
   
     constructor(canvasHeight: number, canvasWidth: number, 
-      posX:number, posY:number){
+      posX:number, posY:number, name: string){
       super(PIXI.loader.resources["floor"].texture, canvasWidth, canvasHeight);
+
+      this.spriteName = name;
+      this.name = name;
   
       this.canvasHeight = canvasHeight;
       this.canvasWidth = canvasWidth;

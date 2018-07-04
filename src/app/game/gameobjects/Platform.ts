@@ -1,12 +1,16 @@
 export default class Platform extends PIXI.extras.TilingSprite {
 
     private startPosition: number = 0;
+    private spriteName: string;
 
     constructor(canvasHeight: number, canvasWidth: number, 
-      posX:number, posY:number, platformDivider:number){
+      posX:number, posY:number, platformDivider:number, name:string){
       super(PIXI.loader.resources["floor"].texture, canvasWidth, canvasHeight);
       
       this.startPosition = canvasWidth * posX;
+
+      this.spriteName = name;
+      this.name = name;
   
       // Height and Width of the platform
       this.width = canvasWidth / platformDivider;
@@ -17,8 +21,6 @@ export default class Platform extends PIXI.extras.TilingSprite {
   
       this.x = this.startPosition;
       this.y = canvasHeight / posY;
-
-      console.log("platform created: " + this.x , this.y, this.width )
     }
   
     public startPlatform(pixiApp : PIXI.Application){

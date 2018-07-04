@@ -16,8 +16,6 @@ export class GameComponent implements AfterViewInit {
 
   }
   
-
-
   ngAfterViewInit(): void {
     RunningGame.game.initialize();
   }
