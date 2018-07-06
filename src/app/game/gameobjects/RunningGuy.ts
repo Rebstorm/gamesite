@@ -33,12 +33,8 @@ export default class RunningGuy extends PIXI.Sprite {
   
       // We got to animate the dude, yo. 
       let timeSinceLastFrameUpdate: number = 0;
-      pixiApp.ticker.add((delta)=> { 
-  
-  
-        // TODO: Maybe move this back? I dont know..
-        this.updateSprite();
-  
+      pixiApp.ticker.add((delta)=> {   
+    
         if(timeSinceLastFrameUpdate < 5){
           timeSinceLastFrameUpdate += delta;
         } else {
@@ -46,6 +42,9 @@ export default class RunningGuy extends PIXI.Sprite {
           timeSinceLastFrameUpdate = 0;
         }
         timeSinceLastFrameUpdate++;
+
+        // TODO: Maybe move this back? I dont know..
+        this.updateSprite();
       });
       
     }
@@ -82,6 +81,7 @@ export default class RunningGuy extends PIXI.Sprite {
     }
     
     public multiplier = 1.2;
+
     updateSprite(){   
       
       if(this.jumpingSpeedY > 0){
@@ -91,13 +91,13 @@ export default class RunningGuy extends PIXI.Sprite {
       }    
 
       if(this.isOnPlatform){
-        this.y = this.canvasHeight / 1.55;
+        
       } else {
+        
         this.jumpingSpeedY += this.addGravity();
         this.y += this.jumpingSpeedY;
-      }
 
-      
+      }      
     
     }
 

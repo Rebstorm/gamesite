@@ -39,10 +39,10 @@ export default class DangerousObject extends PIXI.Sprite {
         this.y = canvasHeight / posY;
         var t = Math.random();
         console.log(t);
-        if(t > 0.5){
+        if(1 > 0.5){
             this.texture = PIXI.loader.resources["snail1"].textures["tile000.png"];
-            this.scale.x *= 1.2;
-            this.scale.y *= 1.2;
+            this.scale.x *= 1.5;
+            this.scale.y *= 1.5;
         } else {
             this.texture = PIXI.loader.resources["snail1"].textures["tile000.png"];
             this.scale.x *= 1.5;
@@ -50,10 +50,10 @@ export default class DangerousObject extends PIXI.Sprite {
         }
 
         
-        RunningGame.game.pixiApp.ticker.add(e => { this.startDanger(e) } , RunningGame.game);
+        this.pixiApp.ticker.add(e => { this.startDanger(e) } , RunningGame.game);
     }
 
-    stopStars(){
+    stopDanger(delta){
         this.pixiApp.ticker.remove(this.startDanger, RunningGame.game);
     }
 

@@ -73,22 +73,40 @@ export default class RunningGame {
       // Waiting for current loops to run out.. not elegant but works.
       //window.setTimeout( e=> this.recreateGame(), 200);
 
-      this.gameGuy.y = 10;
-      this.gameGuy.alpha = 0;
+      
+      //this.gameGuy.alpha = 0;
       this.pixiApp.ticker.stop();
+
+      this.stars.forEach( star => {
+        this.pixiApp.stage.removeChild(star);
+      })
+
+      this.dangers.forEach( danger => {
+        this.pixiApp.stage.removeChild(danger);
+      });
+
+      this.pixiApp.ticker.start();
+      //this.gameGuy.y = 10;
+
+      //different modes? 
+
+      
+      
+
+      /*
       window.setTimeout(e => {
 
         this.stars.forEach(star => {
           star.stopStars();
         })
 
-        RunningGame.game.pixiApp.stage.removeChildren();
-        RunningGame.game.pixiApp.ticker.start();
+        this.pixiApp.stage.removeChildren();
+        this.pixiApp.ticker.start();
       }, 200)
       
       
       this.createGameAssets();
-      
+      */
     }
 
     makeGameMenu(){
@@ -122,7 +140,6 @@ export default class RunningGame {
       this.createEventHandlers();
       this.createColliders();
       this.startGame();
-      this.listenToScoreChanges();
     }
 
     starTicker;
@@ -145,11 +162,6 @@ export default class RunningGame {
           RunningGame.game.pixiApp.stage.addChild(newDanger);
         }
       }, 1500)
-    }
-
-    listenToScoreChanges(){
-      window.setInterval(e => {
-      }, 100);
     }
   
     addGameObjects(){
@@ -250,7 +262,7 @@ export default class RunningGame {
           this.objectsColliding(this.gameGuy, this.thirdFloor))
           && this.gameGuy.jumpingSpeedY > 1.8){
             this.gameGuy.jumpingSpeedY = 0;
-            this.gameGuy.position.y = this.canvasHeight / 1.55;
+            this.gameGuy.position.y = this.canvasHeight/ 1.55;
             this.gameGuy.isJumpingUp = false;
             this.gameGuy.isJumping = false;
             this.gameGuy.isOnPlatform = true;
