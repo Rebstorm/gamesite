@@ -95,10 +95,13 @@ export default class RunningGame {
         var deadScreen = document.getElementById("game-ded");
         var deadScreenText = document.getElementById("game-ded-text");
 
-        gameMenu.className = "shake";
-        gameMenu.style.display = "block";
-        deadScreenText.innerHTML = (this.score > 0 ? "u ded by snail :( <br> but you maded " + this.score + " points" : "u suk, no points and dead");
-        deadScreen.style.display = "block";
+        
+        deadScreenText.innerHTML = (this.score > 0 ? "u ded by snail :( <br> but you maded " + this.score + " points. <br> Good Jobber.<br>" : "u suk, no points and dead");
+        window.setTimeout( e => { 
+          gameMenu.className = "shake";
+          gameMenu.style.display = "block";
+          deadScreen.style.display = "block"
+        }, 1000);
               
     }
     
@@ -143,7 +146,7 @@ export default class RunningGame {
     dangerTicker; 
     dangerTime = 0;
     addMoreDanger(){
-      let randomEnemy = Math.random() * 3000;
+      let randomEnemy = (Math.random() * 3000) + 2500;
       this.dangerTicker = window.setInterval( e => {
         let newDanger: DangerousObject = new DangerousObject(this.canvasHeight, this.canvasWidth, 2, this.canvasWidth, this.pixiApp, "danger"+this.dangerCounter++)
         RunningGame.game.dangers.push(newDanger);
@@ -206,6 +209,17 @@ export default class RunningGame {
         }        
       
       });
+
+      document.addEventListener('touchstart', e=> {
+        if(this.gameGuy.isJumping){
+          return;
+        } else {
+          this.gameGuy.isJumping = true;
+          // Adding the jumping speed.
+          RunningGame.game.gameGuy.addJumpSpeed(-15);
+          RunningGame.game.pixiApp.ticker.addOnce( (e)=> { this.checkIfOnFloor(e) });
+        }   
+      })
     }
   
     sinceLastFrameUpdate : number = 0;

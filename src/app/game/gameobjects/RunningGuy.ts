@@ -67,7 +67,7 @@ export default class RunningGuy extends PIXI.Sprite {
           } else if(this.hasClimaxedAsDead){
             if(this.y > 300){
               window.clearInterval(ticker);
-              this.y = 10;
+              this.y = -51;
               this.rotation = 0;
               return true;
             }
