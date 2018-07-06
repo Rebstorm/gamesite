@@ -20,6 +20,10 @@ export class GameComponent implements AfterViewInit {
     RunningGame.game.initialize();
   }
 
+  restartGame(){
+    RunningGame.game.restartGame();
+  }
+
 }
 
 

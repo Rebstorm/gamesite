@@ -49,12 +49,7 @@ export default class DangerousObject extends PIXI.Sprite {
             this.scale.y *= 1.5;
         }
 
-        
-        this.pixiApp.ticker.add(e => { this.startDanger(e) } , RunningGame.game);
-    }
-
-    stopDanger(delta){
-        this.pixiApp.ticker.remove(this.startDanger, RunningGame.game);
+        RunningGame.game.pixiApp.ticker.add(e => { this.startDanger(e) } , RunningGame.game);
     }
 
     timeSinceLastFrameUpdate: number = 0;
@@ -80,14 +75,10 @@ export default class DangerousObject extends PIXI.Sprite {
         if(this.position.x > -this.startPosition){
             this.position.x -= delta;
         } else{
-            this.position.x = this.startPosition;
-            // Do we want to remove the stuff? I dont think we do.
-            /*
+            // Remove when outside screen.
             RunningGame.game.pixiApp.ticker.remove(e => { this.startDanger(e) } , RunningGame.game);
             this.pixiApp.stage.removeChild(this);
-            RunningGame.game.dangers.splice(RunningGame.game.dangers.findIndex( danger =>  danger.spriteName == this.spriteName, 1));
-            console.log("removed snail")
-            */
+            RunningGame.game.dangers.splice(RunningGame.game.dangers.findIndex( dangers => dangers.spriteName == this.spriteName), 1);
         }
     }
 
@@ -115,7 +106,7 @@ export default class DangerousObject extends PIXI.Sprite {
 
         if(this.objectsColliding(this, this.pixiApp.stage.getChildByName("runningGuy") as Sprite) 
             && !this.hasCollided){
-            RunningGame.game.pixiApp.ticker.remove(e => { this.stopDanger(e) } , RunningGame.game);
+            RunningGame.game.pixiApp.ticker.remove(e => { this.startDanger(e) } , RunningGame.game);
             this.pixiApp.stage.removeChild(this);
             this.hasCollided = true;
             console.log("you ded!! lololol");

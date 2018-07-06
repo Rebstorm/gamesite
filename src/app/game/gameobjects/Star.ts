@@ -41,11 +41,11 @@ export default class Star extends PIXI.Sprite {
         this.scale.x *= 0.2;
         this.scale.y *= 0.2;
 
-        this.pixiApp.ticker.add(e => { this.startStar(e) } , RunningGame.game);
+        this.pixiApp.ticker.add(e => { this.startStar(e) } , this);
     }
 
     stopStars(){
-        this.pixiApp.ticker.remove(this.startStar, RunningGame.game);
+        this.pixiApp.ticker.remove(this.startStar, this);
     }
 
     timeSinceLastFrameUpdate: number = 0;
@@ -69,6 +69,9 @@ export default class Star extends PIXI.Sprite {
             this.position.x -= delta;
         } else{
             this.position.x = this.startPosition;
+            RunningGame.game.pixiApp.ticker.remove(e => { this.startStar(e) } , RunningGame.game);
+            RunningGame.game.pixiApp.stage.removeChild(this);
+            RunningGame.game.stars.splice(RunningGame.game.stars.findIndex( star => star.spriteName == this.spriteName), 1);
             //this.destroy();
         }
     }
@@ -98,7 +101,7 @@ export default class Star extends PIXI.Sprite {
             // Todo: Add points once caught.
             this.hasCollided = true;
             RunningGame.game.stars.splice(RunningGame.game.stars.findIndex( star => star.spriteName == this.spriteName), 1);
-            RunningGame.game.score += 100;
+            RunningGame.game.score += 10;
             RunningGame.game.scoreText.text = "Score: " + RunningGame.game.score;
             return true;
         }

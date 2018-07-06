@@ -15,7 +15,6 @@ export class MainmenuComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-
     // Add animation
     document.getElementById("main-title-screen").style.animation = "zoomin cubic-bezier(0.075, 0.82, 0.165, 1) 1750ms";
     

@@ -11,6 +11,7 @@ export default class RunningGuy extends PIXI.Sprite {
     public isJumpingUp = false;
     public isOnPlatform = false;
     private pixiApp: PIXI.Application;
+    public isDeaded = false;
     
   
     constructor(canvasHeight: number, canvasWidth: number, pixiApp: PIXI.Application) {
@@ -22,7 +23,7 @@ export default class RunningGuy extends PIXI.Sprite {
       this.name = "runningGuy";
   
       // Set the transformation origin
-      //this.anchor.set(0.5, 0.5);
+      this.anchor.set(0, 0);
   
       this.x = canvasWidth / 2;
       // Offset for ground and stuff.
@@ -47,6 +48,37 @@ export default class RunningGuy extends PIXI.Sprite {
         this.updateSprite();
       });
       
+    }
+
+    hasClimaxedAsDead = false;
+    playDeadAnimation(){
+
+      var ticker = window.setInterval(e => {  
+          if(this.y < 300 && this.y > 50 && !this.hasClimaxedAsDead){
+            
+            this.y -= 10;
+            this.isJumping = true;
+            this.rotation -= 0.02 * this.pixiApp.ticker.deltaTime;
+            
+            if(this.y < 50){
+              this.hasClimaxedAsDead = true;
+            }
+
+          } else if(this.hasClimaxedAsDead){
+            if(this.y > 300){
+              window.clearInterval(ticker);
+              this.y = 10;
+              this.rotation = 0;
+              return true;
+            }
+            else {
+              this.y += 10;
+              this.rotation -= 0.02 * this.pixiApp.ticker.deltaTime;
+            }
+          }
+
+      }, 25);
+
     }
   
     private guyRunningTextureCounter: number = 0;
@@ -82,7 +114,10 @@ export default class RunningGuy extends PIXI.Sprite {
     
     public multiplier = 1.2;
 
-    updateSprite(){   
+    updateSprite(){  
+      
+      if(this.isDeaded)
+        return;
       
       if(this.jumpingSpeedY > 0){
         this.isJumpingUp = false;

@@ -65,54 +65,41 @@ export default class RunningGame {
     }
 
     endGame(){
-      //this.pixiApp.ticker.stop();
-     
-      //this.pixiApp.ticker.remove
-      //this.createGameMenu();
-      
-      // Waiting for current loops to run out.. not elegant but works.
-      //window.setTimeout( e=> this.recreateGame(), 200);
-
       
       //this.gameGuy.alpha = 0;
-      this.pixiApp.ticker.stop();
+      this.pixiApp.ticker.stop();      
+      this.gameGuy.isDeaded = true;
 
-      this.stars.forEach( star => {
-        this.pixiApp.stage.removeChild(star);
-      })
-
-      this.dangers.forEach( danger => {
-        this.pixiApp.stage.removeChild(danger);
-      });
+      // removing the interval for the tickers.
+      //window.clearInterval(this.starTicker);
+      //window.clearInterval(this.dangerTicker);
 
       this.pixiApp.ticker.start();
-      //this.gameGuy.y = 10;
 
-      //different modes? 
-
-      
-      
-
-      /*
-      window.setTimeout(e => {
-
-        this.stars.forEach(star => {
-          star.stopStars();
-        })
-
-        this.pixiApp.stage.removeChildren();
-        this.pixiApp.ticker.start();
-      }, 200)
-      
-      
-      this.createGameAssets();
-      */
+      this.gameGuy.playDeadAnimation();
+      this.showGameMenu();
     }
 
-    makeGameMenu(){
-
+    restartGame(){
+      var gameMenu = document.getElementById("game-menu");
+      gameMenu.style.display = "none";
       
+      this.score = 0;
+      this.scoreText.text = "0, lol";
+      this.gameGuy.isDeaded = false;
 
+    }
+
+    showGameMenu(){
+        var gameMenu = document.getElementById("game-menu");
+        var deadScreen = document.getElementById("game-ded");
+        var deadScreenText = document.getElementById("game-ded-text");
+
+        gameMenu.className = "shake";
+        gameMenu.style.display = "block";
+        deadScreenText.innerHTML = (this.score > 0 ? "u ded by snail :( <br> but you maded " + this.score + " points" : "u suk, no points and dead");
+        deadScreen.style.display = "block";
+              
     }
     
     starCounter: number = 0; 
@@ -154,14 +141,21 @@ export default class RunningGame {
     }
     
     dangerTicker; 
+    dangerTime = 0;
     addMoreDanger(){
+      let randomEnemy = Math.random() * 3000;
       this.dangerTicker = window.setInterval( e => {
-        if(this.dangers.length < 3){
-          let newDanger: DangerousObject = new DangerousObject(this.canvasHeight, this.canvasWidth, 2, this.canvasWidth, this.pixiApp, "danger"+this.dangerCounter++)
-          this.dangers.push(newDanger);
-          RunningGame.game.pixiApp.stage.addChild(newDanger);
-        }
-      }, 1500)
+        let newDanger: DangerousObject = new DangerousObject(this.canvasHeight, this.canvasWidth, 2, this.canvasWidth, this.pixiApp, "danger"+this.dangerCounter++)
+        RunningGame.game.dangers.push(newDanger);
+        RunningGame.game.pixiApp.stage.addChild(newDanger);
+
+        
+        
+      }, randomEnemy)
+    }
+
+    removeAllStars(){
+
     }
   
     addGameObjects(){
@@ -240,13 +234,14 @@ export default class RunningGame {
     createGroundFloorCollisionDetection(){
       // Creating collision between guy and floor. 
       this.pixiApp.ticker.add((delta) => {
+          // if dead, we ignore it all. 
+          if(this.gameGuy.isDeaded)
+            return;
           //console.log(this.objectsColliding(this.gameGuy, this.floor));
           if(this.objectsColliding(this.gameGuy, this.groundFloor) && !this.gameGuy.isJumping){
             if(!this.gameGuy.isJumpingUp){
               this.gameGuy.jumpingSpeedY = 0;
               this.gameGuy.position.y = this.canvasHeight / 1.25;
-            } else {
-  
             }
           }
       });
@@ -254,8 +249,12 @@ export default class RunningGame {
     }
   
     createPlatformCollider(){
+
       // platform collider
       this.pixiApp.ticker.add((delta) => {
+
+          if(this.gameGuy.isDeaded)
+            return;
   
           if((this.objectsColliding(this.gameGuy, this.firstFloor) || 
           this.objectsColliding(this.gameGuy, this.secondFloor) ||
