@@ -1,6 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 
 import RunningGame from './gamelogic/RunningGame';
+import { Router } from '@angular/router';
 
 
 
@@ -12,7 +13,9 @@ import RunningGame from './gamelogic/RunningGame';
 
 export class GameComponent implements AfterViewInit {
 
-  constructor(){
+  private router: Router;
+  constructor(router : Router){
+    this.router = router;
 
   }
   
@@ -25,7 +28,7 @@ export class GameComponent implements AfterViewInit {
   }
 
   goBack(){
-    window.history.back();
+    
   }
 
 }

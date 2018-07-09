@@ -9,7 +9,6 @@ import { Router } from '@angular/router';
 export class MainmenuComponent implements AfterViewInit {
   
   router:Router;
-
   constructor(router:Router) { 
     this.router = router;
   }
