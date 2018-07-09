@@ -32,6 +32,7 @@ export default class RunningGame {
     private canvasHeight = 400;
     private canvasWidth = window.innerWidth; 
 
+
     public score : number = 0;
     
     removeWebPageElements(){
@@ -69,32 +70,36 @@ export default class RunningGame {
       //this.gameGuy.alpha = 0;
       this.pixiApp.ticker.stop();      
       this.gameGuy.isDeaded = true;
-
       // removing the interval for the tickers.
       //window.clearInterval(this.starTicker);
       //window.clearInterval(this.dangerTicker);
 
       this.pixiApp.ticker.start();
-
-      this.gameGuy.playDeadAnimation();
+      this.gameGuy.playDeadAnimation(false);
       this.showGameMenu();
     }
 
     restartGame(){
-      var gameMenu = document.getElementById("game-menu");
-      gameMenu.style.display = "none";
-      
-      this.score = 0;
-      this.scoreText.text = "0, lol";
       this.gameGuy.isDeaded = false;
+      
+      window.setTimeout( e => {
+        var gameMenu = document.getElementById("game-menu");
+        gameMenu.style.display = "none";
 
+        this.gameGuy.y = 0;
+        this.gameGuy.jumpingSpeedY = 0;
+        
+        this.score = 0;
+        this.scoreText.text = "0, lol";
+
+      }, 100)
+      
     }
 
     showGameMenu(){
         var gameMenu = document.getElementById("game-menu");
         var deadScreen = document.getElementById("game-ded");
         var deadScreenText = document.getElementById("game-ded-text");
-
         
         deadScreenText.innerHTML = (this.score > 0 ? "u ded by snail :( <br> but you maded " + this.score + " points. <br> Good Jobber.<br>" : "u suk, no points and dead");
         window.setTimeout( e => { 
@@ -109,7 +114,7 @@ export default class RunningGame {
     dangerCounter: number = 0;
     createGameAssets(): any {    
       // Get our running guy.
-      this.gameGuy = new RunningGuy(this.canvasHeight, this.canvasWidth, this.pixiApp);
+      this.gameGuy = new RunningGuy(this.canvasHeight, this.canvasWidth, RunningGame.game.pixiApp);
   
       // Get our ground. The absolute base floor.
       this.groundFloor = new Floor(this.canvasHeight, this.canvasWidth, 1, 1.15, "floor");
@@ -198,7 +203,6 @@ export default class RunningGame {
       });
   
       document.addEventListener('mousedown', e => {
-
         if(this.gameGuy.isJumping){
           return;
         } else {
@@ -248,9 +252,10 @@ export default class RunningGame {
     createGroundFloorCollisionDetection(){
       // Creating collision between guy and floor. 
       this.pixiApp.ticker.add((delta) => {
-          // if dead, we ignore it all. 
+          
           if(this.gameGuy.isDeaded)
             return;
+
           //console.log(this.objectsColliding(this.gameGuy, this.floor));
           if(this.objectsColliding(this.gameGuy, this.groundFloor) && !this.gameGuy.isJumping){
             if(!this.gameGuy.isJumpingUp){

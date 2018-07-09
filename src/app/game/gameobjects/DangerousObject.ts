@@ -27,6 +27,8 @@ export default class DangerousObject extends PIXI.Sprite {
         this.canvasWidth = canvasWidth;
         this.spriteName = name;
 
+        this.texture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
+
         this.startPosition = canvasWidth;
     
         this.texture.baseTexture.scaleMode = PIXI.SCALE_MODES.NEAREST;
@@ -38,7 +40,7 @@ export default class DangerousObject extends PIXI.Sprite {
         // Offset for ground and stuff.
         this.y = canvasHeight / posY;
         var t = Math.random();
-        console.log(t);
+        
         if(1 > 0.5){
             this.texture = PIXI.loader.resources["snail1"].textures["tile000.png"];
             this.scale.x *= 1.5;
@@ -68,7 +70,6 @@ export default class DangerousObject extends PIXI.Sprite {
 
 
         this.timeSinceLastFrameUpdate++;
-
     }
 
     move(delta:number){
@@ -107,7 +108,7 @@ export default class DangerousObject extends PIXI.Sprite {
         if(this.objectsColliding(this, this.pixiApp.stage.getChildByName("runningGuy") as Sprite) 
             && !this.hasCollided){
             RunningGame.game.pixiApp.ticker.remove(e => { this.startDanger(e) } , RunningGame.game);
-            this.pixiApp.stage.removeChild(this);
+            //this.pixiApp.stage.removeChild(this);
             this.hasCollided = true;
             console.log("you ded!! lololol");
             RunningGame.game.endGame();
