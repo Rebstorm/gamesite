@@ -39,7 +39,6 @@ export default class RunningGame {
     
     removeWebPageElements(){
       document.getElementById("ground").style.display = "none";
-      document.getElementById("clouds").style.display = "none";
     }
   
     createGameField(){
@@ -119,7 +118,7 @@ export default class RunningGame {
         window.setTimeout( e => { 
           gameMenu.className = "shake";
           gameMenu.style.display = "block";
-          deadScreen.style.display = "block"
+          deadScreen.style.display = "block";
         }, 1000);
               
     }

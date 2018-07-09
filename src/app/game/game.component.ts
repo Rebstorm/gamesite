@@ -24,6 +24,10 @@ export class GameComponent implements AfterViewInit {
     RunningGame.game.restartGame();
   }
 
+  goBack(){
+    window.history.back();
+  }
+
 }
 
 

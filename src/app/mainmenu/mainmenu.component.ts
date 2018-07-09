@@ -18,9 +18,7 @@ export class MainmenuComponent implements AfterViewInit {
     // Add animation
     document.getElementById("main-title-screen").style.animation = "zoomin cubic-bezier(0.075, 0.82, 0.165, 1) 1750ms";
 
-    document.getElementById("ground").style.display = "block";
-    document.getElementById("clouds").style.display = "block";
-    
+    document.getElementById("ground").style.display = "block";    
   }
 
   showWebPageElements(){
