@@ -1,57 +1,57 @@
 {"frames": {
 
-"star_1.png":
+"star1m.png":
 {
-	"frame": {"x":0,"y":0,"w":100,"h":100},
+	"frame": {"x":0,"y":0,"w":200,"h":200},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":100,"h":100},
-	"sourceSize": {"w":100,"h":100},
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
+	"sourceSize": {"w":200,"h":200},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"star_2.png":
+"star2m.png":
 {
-	"frame": {"x":100,"y":0,"w":87,"h":100},
+	"frame": {"x":200,"y":0,"w":200,"h":200},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":87,"h":100},
-	"sourceSize": {"w":87,"h":100},
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
+	"sourceSize": {"w":200,"h":200},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"star_3.png":
+"star3m.png":
 {
-	"frame": {"x":187,"y":0,"w":47,"h":100},
+	"frame": {"x":400,"y":0,"w":200,"h":200},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":47,"h":100},
-	"sourceSize": {"w":47,"h":100},
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
+	"sourceSize": {"w":200,"h":200},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"star_4.png":
+"star4m.png":
 {
-	"frame": {"x":234,"y":0,"w":15,"h":100},
+	"frame": {"x":600,"y":0,"w":200,"h":200},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":15,"h":100},
-	"sourceSize": {"w":15,"h":100},
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
+	"sourceSize": {"w":200,"h":200},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"star_5.png":
+"star5m.png":
 {
-	"frame": {"x":249,"y":0,"w":47,"h":100},
+	"frame": {"x":800,"y":0,"w":200,"h":200},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":47,"h":100},
-	"sourceSize": {"w":47,"h":100},
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
+	"sourceSize": {"w":200,"h":200},
 	"pivot": {"x":0.5,"y":0.5}
 },
-"star_6.png":
+"star6m.png":
 {
-	"frame": {"x":296,"y":0,"w":87,"h":100},
+	"frame": {"x":1000,"y":0,"w":200,"h":200},
 	"rotated": false,
 	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":87,"h":100},
-	"sourceSize": {"w":87,"h":100},
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":200},
+	"sourceSize": {"w":200,"h":200},
 	"pivot": {"x":0.5,"y":0.5}
 }},
 "meta": {
@@ -59,8 +59,8 @@
 	"version": "1.0",
 	"image": "star.png",
 	"format": "RGBA8888",
-	"size": {"w":383,"h":100},
+	"size": {"w":1200,"h":200},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:1ae7c8255c7e8d7af055a4f9d965c525:3faf48c7aa99a07f296ee155a65d1155:24daf5f0426eb704a6b44d07225f8860$"
+	"smartupdate": "$TexturePacker:SmartUpdate:0cb5e6472c4c7a53ba4290639628136b:275098b1b2816bea6b9b6bfb024fd00b:24daf5f0426eb704a6b44d07225f8860$"
 }
 }

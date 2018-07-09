@@ -56,58 +56,27 @@ export default class RunningGuy extends PIXI.Sprite {
     playDeadAnimation(finished: boolean){
         var up = false;
         var x = window.setInterval( e => {
+
+
           this.y -= 10;
           this.isJumping = true;
           this.rotation -= 0.1 * this.pixiApp.ticker.deltaTime;
-          this.scale.x -= 0.05;
-          this.scale.y -= 0.05;
-        
-          if(this.y < -100){
+          this.scale.x += 0.08;
+          this.scale.y += 0.08;
+
+          if(this.scale.x > 5){
             this.y = -60;
             this.rotation = 0;
             this.scale.x = 1.50;
             this.scale.y = 1.50;
             this.jumpingSpeedY = 0;
-            this.isJumping = false;
+            this.isJumping = false;            
             window.clearInterval(x);
           }
 
         }, 25);
 
     }
-
-    
-      
-
-      /*
-      var ticker = window.setInterval(e => {  
-          if(this.y < 600 && this.y > 50 && !finished){
-            
-            this.y -= 10;
-            this.isJumping = true;
-            this.rotation -= 0.02 * this.pixiApp.ticker.deltaTime;
-            
-            if(this.y < 50){
-              finished = true;
-            }
-
-          } else if(finished){
-            if(this.y > 600){
-              window.clearInterval(ticker);
-              this.y = -51;
-              this.rotation = 0;
-              
-              return true;
-            }
-            else {
-              this.y += 10;
-              this.rotation -= 0.02 * this.pixiApp.ticker.deltaTime;
-            }
-          }
-
-      }, 25);
-      */
-
   
     private guyRunningTextureCounter: number = 0;
     private guyJumpingTextureCounter: number = 0;
@@ -171,7 +140,6 @@ export default class RunningGuy extends PIXI.Sprite {
 
     addGravity() : number {
       return this.GRAVITY / this.pixiApp.ticker.elapsedMS * this.multiplier ;
-      console.log("gravity: "  + this.GRAVITY)
     }
     
-  }
+}

@@ -38,8 +38,8 @@ export default class Star extends PIXI.Sprite {
         // Offset for ground and stuff.
         this.y = canvasHeight / posY;
     
-        this.scale.x *= 0.2;
-        this.scale.y *= 0.2;
+        this.scale.x *= 0.1;
+        this.scale.y *= 0.1;
 
         this.pixiApp.ticker.add(e => { this.startStar(e) } , this);
     }
@@ -79,11 +79,11 @@ export default class Star extends PIXI.Sprite {
     private starSpinningTextureCounter: number = 1;
     private animateStar() {
         if(this.starSpinningTextureCounter < 7){
-            this.texture = PIXI.loader.resources["star"].textures["star_" + this.starSpinningTextureCounter + ".png"];
+            this.texture = PIXI.loader.resources["star"].textures["star" + this.starSpinningTextureCounter + "m.png"];
             this.starSpinningTextureCounter++;
         } else {
             this.starSpinningTextureCounter = 1;
-            this.texture = PIXI.loader.resources["star"].textures["star_1.png"];
+            this.texture = PIXI.loader.resources["star"].textures["star1m.png"];
         }
     }
 
@@ -100,7 +100,12 @@ export default class Star extends PIXI.Sprite {
             RunningGame.game.pixiApp.stage.removeChild(this);
             // Todo: Add points once caught.
             this.hasCollided = true;
+
             RunningGame.game.stars.splice(RunningGame.game.stars.findIndex( star => star.spriteName == this.spriteName), 1);
+
+            if(RunningGame.game.gameGuy.isDeaded)
+                return;
+
             RunningGame.game.score += 10;
             RunningGame.game.scoreText.text = "Score: " + RunningGame.game.score;
             return true;
