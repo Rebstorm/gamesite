@@ -1,5 +1,7 @@
 div#main-playboard {
+    position: relative;
     text-align: center;
+    animation: fadeIn cubic-bezier(0.175, 0.885, 0.32, 1.275) 2000ms;
 }
 
 div#game-menu{
@@ -20,7 +22,7 @@ div#game-ded{
 
 
 div.fadeIn{
-    animation: fadeIn cubic-bezier(0.215, 0.610, 0.355, 1) 1700ms;
+    animation: fadeIn cubic-bezier(0.215, 0.610, 0.355, 1) 3000ms;
 }
 
 div.shake{

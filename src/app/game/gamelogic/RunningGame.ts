@@ -15,9 +15,10 @@ export default class RunningGame {
     initialize(){
       this.removeWebPageElements();
       this.createGameField();
+      this.started = true;
     }
     
-    
+    public started: boolean = false;
     public pixiApp: PIXI.Application;
     public gameGuy: RunningGuy; 
     private groundFloor: Floor;
@@ -32,6 +33,7 @@ export default class RunningGame {
     private canvasHeight = 400;
     private canvasWidth = window.innerWidth; 
 
+    private ticker = new PIXI.ticker.Ticker();
 
     public score : number = 0;
     
@@ -41,9 +43,21 @@ export default class RunningGame {
     }
   
     createGameField(){
-      this.pixiApp = new PIXI.Application(this.canvasWidth, this.canvasHeight, { backgroundColor: 0x1099bb });
+      this.pixiApp = new PIXI.Application(this.canvasWidth, this.canvasHeight, { transparent: true });
       var canvas = document.getElementById("main-playboard");
       canvas.appendChild(this.pixiApp.view);
+
+
+      // If we are reloading everything, we cant have all the tickers keep.
+      window.clearInterval(this.starTicker);
+      window.clearInterval(this.dangerTicker);
+      PIXI.loader.reset();
+
+      this.stars = [];
+      this.dangers = [];
+      this.pixiApp.stage.removeChildren();
+
+
 
       // Load the stuff for the game.
       PIXI.loader
@@ -155,9 +169,7 @@ export default class RunningGame {
       this.dangerTicker = window.setInterval( e => {
         let newDanger: DangerousObject = new DangerousObject(this.canvasHeight, this.canvasWidth, 2, this.canvasWidth, this.pixiApp, "danger"+this.dangerCounter++)
         RunningGame.game.dangers.push(newDanger);
-        RunningGame.game.pixiApp.stage.addChild(newDanger);
-
-        
+        RunningGame.game.pixiApp.stage.addChild(newDanger);        
         
       }, randomEnemy)
     }
