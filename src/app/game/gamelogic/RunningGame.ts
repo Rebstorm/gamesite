@@ -103,7 +103,7 @@ export default class RunningGame {
         
         deadScreenText.innerHTML = (this.score > 0 ? "u ded by snail :( <br> but you maded " + this.score + " points. <br> Good Jobber.<br>" : "u suk, no points and dead");
         window.setTimeout( e => { 
-          gameMenu.className = "shake-rotate";
+          gameMenu.className = "shake";
           gameMenu.style.display = "block";
           deadScreen.style.display = "block"
         }, 1000);
