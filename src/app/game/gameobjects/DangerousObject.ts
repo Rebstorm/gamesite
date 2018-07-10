@@ -1,6 +1,13 @@
 import { Sprite } from "pixi.js";
 import RunningGame from "../gamelogic/RunningGame";
 
+
+// I cant believe this is how you do enums in TS... unbelievable.. 
+enum SnailType {
+    BlueSnail,
+    OrangeSnail
+}
+
 export default class DangerousObject extends PIXI.Sprite {
 
     private startPosition: number = 0;
@@ -14,7 +21,8 @@ export default class DangerousObject extends PIXI.Sprite {
     public isJumpingUp = false;
     private pixiApp: PIXI.Application;
     private spriteName: string;
-
+    private snail : SnailType;
+    
     constructor(canvasHeight: number, canvasWidth: number,
         posY:number, posX:number, pixiApp : PIXI.Application, name:string){
         super();
@@ -40,15 +48,16 @@ export default class DangerousObject extends PIXI.Sprite {
         // Offset for ground and stuff.
         this.y = canvasHeight / posY;
         var t = Math.random();
-        
-        if(1 > 0.5){
+        if(t > 0.5){
             this.texture = PIXI.loader.resources["snail1"].textures["tile000.png"];
             this.scale.x *= 1.5;
             this.scale.y *= 1.5;
+            this.snail = SnailType.BlueSnail;
         } else {
-            this.texture = PIXI.loader.resources["snail1"].textures["tile000.png"];
+            this.texture = PIXI.loader.resources["snail2"].textures["snail2_1.png"];
             this.scale.x *= 1.5;
             this.scale.y *= 1.5;
+            this.snail = SnailType.OrangeSnail;
         }
 
         RunningGame.game.pixiApp.ticker.add(e => { this.startDanger(e) } , RunningGame.game);
@@ -85,13 +94,39 @@ export default class DangerousObject extends PIXI.Sprite {
 
     private snailSpinningCounter: number = 1;
     private animateSnail() {
-        if(this.snailSpinningCounter < 4){
-            this.texture = PIXI.loader.resources["snail1"].textures["tile00" + this.snailSpinningCounter + ".png"];
-            this.snailSpinningCounter++;
-        } else {
-            this.snailSpinningCounter = 1;
-            this.texture = PIXI.loader.resources["snail1"].textures["tile000.png"];
+
+        
+        switch(this.snail){
+            case SnailType.OrangeSnail:
+
+                if(this.snailSpinningCounter < 4){
+                    this.texture = PIXI.loader.resources["snail2"].textures["snail2_" + this.snailSpinningCounter + ".png"];
+                    this.snailSpinningCounter++;
+                } else {
+                    this.snailSpinningCounter = 1;
+                    this.texture = PIXI.loader.resources["snail2"].textures["snail2_1.png"];
+                }
+
+            break;
+
+            case SnailType.BlueSnail:
+
+                if(this.snailSpinningCounter < 4){
+                    this.texture = PIXI.loader.resources["snail1"].textures["tile00" + this.snailSpinningCounter + ".png"];
+                    this.snailSpinningCounter++;
+                } else {
+                    this.snailSpinningCounter = 1;
+                    this.texture = PIXI.loader.resources["snail1"].textures["tile000.png"];
+                }
+
+            break;
+
+            
+            default:
+            break;
+
         }
+
     }
 
 
@@ -129,7 +164,10 @@ export default class DangerousObject extends PIXI.Sprite {
                 this.objectsColliding(this, this.pixiApp.stage.getChildByName("thirdFloor") as Sprite)
                 ){
                 this.hasLanded = true;
-                this.y = this.y + 10;
+                if(this.snail == SnailType.OrangeSnail)
+                    this.y += 25;
+                else if(this.snail == SnailType.BlueSnail)
+                    this.y += 15;
                                 
             } else {
                 this.y = this.y + 15;

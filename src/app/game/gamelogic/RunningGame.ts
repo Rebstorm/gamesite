@@ -65,6 +65,7 @@ export default class RunningGame {
         .add("floor", "../../assets/img/ground_2.png")
         .add("star", "../../assets/img/sprites/star.json")
         .add("snail", "../../assets/img/sprites/snail.png")
+        .add("snail2", "../../assets/img/sprites/snail2.json")
         .add("snail1", "../../assets/img/sprites/snail1.json")
         .load(() => {
           this.createGameMenu();
