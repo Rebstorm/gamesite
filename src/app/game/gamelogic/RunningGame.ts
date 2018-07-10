@@ -72,7 +72,7 @@ export default class RunningGame {
         }
       );
       // Setting the speed of the game. Because screw everything else. 
-      this.pixiApp.ticker.speed = 2;
+      this.pixiApp.ticker.speed = 3;
     }
 
     createGameMenu(){
