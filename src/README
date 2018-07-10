@@ -3,6 +3,12 @@ UPDATING THE PROJECT to 6.
 This site was written in 5.2, but since May 2018 we have 6. 
 If you run into errors, please run this guide:
 
+
+
 1. https://update.angular.io/ from 5.2 to 6.
 
 
+
+OR 
+
+1. npm install -g @angular/cli@1.6.8
