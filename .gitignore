@@ -45,3 +45,6 @@ Thumbs.db
 
 #Package Lock
 package-lock.json
+
+#Pauls own dumbness
+dist.tar
